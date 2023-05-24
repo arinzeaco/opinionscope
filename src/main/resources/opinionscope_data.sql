@@ -1,0 +1,3 @@
+--INSERT INTO `users_contact` (email, password, firstname, lastname, created_at, created_by) VALUES
+--('johndoe@example.com', 'password123', 'John', 'Doe', CURRENT_TIMESTAMP, 'system'),
+--('janedoe@example.com', 'password456', 'Jane', 'Doe', CURRENT_TIMESTAMP, 'system');
