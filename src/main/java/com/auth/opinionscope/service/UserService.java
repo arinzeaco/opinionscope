@@ -6,8 +6,10 @@ import com.auth.opinionscope.config.JwtService;
 import com.auth.opinionscope.model.User;
 import com.auth.opinionscope.model.token.Token;
 import com.auth.opinionscope.model.token.TokenType;
+//import com.auth.opinionscope.model.token.VerificationToken;
 import com.auth.opinionscope.repository.TokenRepository;
 import com.auth.opinionscope.repository.UserRepository;
+//import com.auth.opinionscope.repository.VerificationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Random;
 
 /*
 @Slf4j, is a Lombok-provided annotation that will automatically generate an SLF4J
@@ -27,6 +30,9 @@ public class UserService {
     @Autowired
     private UserRepository usersRepository;
 
+//    @Autowired
+//    private VerificationTokenRepository verificationTokenRepository;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -34,14 +40,27 @@ public class UserService {
     private JwtService jwtService;
 
     @Autowired
+    private EmailService emailService;
+
+    @Autowired
     private TokenRepository tokenRepository;
 
     @Autowired
-    private  AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
 
 
+    public boolean checkIfUserAlreadyExist(User users) {
 
-    public AuthenticationResponse createUser(User users){
+        if (usersRepository.existsByEmail(users.getEmail())) {
+            return true;
+        }
+        return false;
+
+    }
+
+
+    public AuthenticationResponse createUser(User users) {
+
         var user = User.builder()
                 .firstname(users.getFirstname())
                 .lastname(users.getLastname())
@@ -52,10 +71,15 @@ public class UserService {
                 .email_verified(users.getEmail_verified())
                 .phonenumber_verified(users.getPhonenumber_verified())
                 .build();
+
         var savedUser = usersRepository.save(user);
-        var jwtToken = jwtService.generateToken(user);
+        var jwtToken = jwtService.generateJwtToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
-        saveUserToken(savedUser, jwtToken);
+
+//        saveUserToken(savedUser, jwtToken,TokenType.BEARER);
+//        saveUserToken(savedUser, generateToken(),TokenType.CONFIRMATION);
+//        saveUserEmailToken(user);
+
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
@@ -71,26 +95,43 @@ public class UserService {
         );
         var user = usersRepository.findByEmail(request.getEmail())
                 .orElseThrow();
-        var jwtToken = jwtService.generateToken(user);
+        var jwtToken = jwtService.generateJwtToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         revokeAllUserTokens(user);
-        saveUserToken(user, jwtToken);
+        saveUserToken(user, jwtToken, TokenType.CONFIRMATION);
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
                 .build();
     }
 
-    private void saveUserToken(User user, String jwtToken) {
+    public String generateToken() {
+        Random random = new Random();
+        int min = 100000; // Minimum 6-digit number
+        int max = 999999; // Maximum 6-digit number
+        int randomNumber = random.nextInt(max - min + 1) + min;
+        return String.valueOf(randomNumber);
+    }
+    private void saveUserToken(User user, String tokenVal, TokenType confirmation) {
         var token = Token.builder()
                 .user(user)
-                .token(jwtToken)
-                .tokenType(TokenType.BEARER)
+                .token(tokenVal)
+                .tokenType(confirmation)
                 .expired(false)
                 .revoked(false)
                 .build();
         tokenRepository.save(token);
     }
+
+//    private void saveUserEmailToken(User user) {
+//        var myToken = VerificationToken.builder()
+//                .user(user)
+//                .confirmationToken(generateToken())
+//                .expiryDate(new Date(System.currentTimeMillis() + 3600000))
+//                .build();
+//        verificationTokenRepository.save(myToken);
+//    }
+
     private void revokeAllUserTokens(User user) {
         var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getUserId());
         if (validUserTokens.isEmpty())
@@ -102,10 +143,10 @@ public class UserService {
         tokenRepository.saveAll(validUserTokens);
     }
 
-    public List<User> getUser(){
+    public List<User> getUser() {
 
-        List<User> savedUser= usersRepository.findAll();
-        return  savedUser;
+        List<User> savedUser = usersRepository.findAll();
+        return savedUser;
     }
 
 

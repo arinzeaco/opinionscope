@@ -1,6 +1,7 @@
 package com.auth.opinionscope.model;
 
 import com.auth.opinionscope.model.token.Token;
+//import com.auth.opinionscope.model.token.VerificationToken;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -76,6 +77,10 @@ public class User extends BaseEntity implements UserDetails {
 
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
+
+
+//    @OneToMany(mappedBy = "user")
+//    private List<VerificationToken> verificationToken;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));

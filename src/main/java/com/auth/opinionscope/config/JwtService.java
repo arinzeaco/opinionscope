@@ -11,8 +11,6 @@ import java.util.function.Function;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -37,11 +35,11 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+    public String generateJwtToken(UserDetails userDetails) {
+        return generateJwtToken(new HashMap<>(), userDetails);
     }
 
-    public String generateToken(
+    public String generateJwtToken(
             Map<String, Object> extraClaims,
             UserDetails userDetails
     ) {
