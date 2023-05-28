@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Data
 @Entity
-public class TagList extends BaseEntity {
+public class TagList {
 
 
     @Id
@@ -18,11 +18,11 @@ public class TagList extends BaseEntity {
     @GenericGenerator(name = "native",strategy = "native")
     private Long tagId;
 
+    private String name;
 
     @ManyToMany(mappedBy = "tagList", fetch = FetchType.EAGER,cascade = CascadeType.PERSIST,
             targetEntity = Questions.class)
     private Set<Questions> questions = new HashSet<>();
-
 
 
 }

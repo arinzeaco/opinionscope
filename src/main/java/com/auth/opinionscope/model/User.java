@@ -38,7 +38,7 @@ public class User extends BaseEntity implements UserDetails {
     private String password;
 
 
-    @Column(nullable = false)
+    @Column(nullable = false,name = "mobile_number")
     @NotBlank(message="Mobile number must not be blank")
     @Pattern(regexp="(^$|[0-9]{10})",message = "Mobile number must be 10 digits")
     private String mobile_number;
@@ -59,18 +59,17 @@ public class User extends BaseEntity implements UserDetails {
     @Column()
     private Date dateOfBirth;
 
-    @Column()
+    @Column(nullable = true)
     private String googleAuthId;
 
     @Column()
     private String googleAuthSecret;
 
-    @Column(nullable = false, columnDefinition = "boolean default false")
+    @Column(columnDefinition = "boolean default false")
     private Boolean email_verified;
 
-    @Column(nullable = false, columnDefinition = "boolean default false")
-    private Boolean phonenumber_verified;
-
+    @Column( columnDefinition = "boolean default false")
+    private Boolean mobile_number_verified;
 
     @Enumerated(EnumType.STRING)
     private Role role;

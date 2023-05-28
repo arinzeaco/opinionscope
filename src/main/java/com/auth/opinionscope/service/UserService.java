@@ -10,6 +10,7 @@ import com.auth.opinionscope.model.token.TokenType;
 import com.auth.opinionscope.repository.TokenRepository;
 import com.auth.opinionscope.repository.UserRepository;
 //import com.auth.opinionscope.repository.VerificationTokenRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,6 +25,7 @@ import java.util.Random;
 Logger static property in the class at compilation time.
 * */
 
+@Slf4j
 @Service
 public class UserService {
 
@@ -66,19 +68,23 @@ public class UserService {
                 .lastname(users.getLastname())
                 .mobile_number(users.getMobile_number())
                 .email(users.getEmail())
-                .password(passwordEncoder.encode(users.getPassword()))
+                .password(passwordEncoder.encode("12345678"))
+//                .password(passwordEncoder.encode(users.getPassword()))
                 .role(users.getRole())
                 .email_verified(users.getEmail_verified())
-                .phonenumber_verified(users.getPhonenumber_verified())
+                .mobile_number_verified(users.getMobile_number_verified())
                 .build();
 
         var savedUser = usersRepository.save(user);
         var jwtToken = jwtService.generateJwtToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
 
-//        saveUserToken(savedUser, jwtToken,TokenType.BEARER);
-//        saveUserToken(savedUser, generateToken(),TokenType.CONFIRMATION);
+        saveUserToken(savedUser, jwtToken,TokenType.BEARER);
+        saveUserToken(savedUser, generateToken(),TokenType.CONFIRMATION);
+        log.info("jwtToken");
+        log.info(jwtToken);
 //        saveUserEmailToken(user);
+
 
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)

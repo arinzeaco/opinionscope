@@ -15,6 +15,8 @@ public class OptionsList {
     @GenericGenerator(name = "native",strategy = "native")
     private Long OptionsListId;
 
+    private String name;
+
     @OneToMany(mappedBy = "options", fetch = FetchType.LAZY,
             cascade = CascadeType.PERSIST,targetEntity = Questions.class)
     private Set<Questions> persons;

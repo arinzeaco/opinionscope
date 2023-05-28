@@ -20,6 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import static com.auth.opinionscope.config.Permission.*;
 import static com.auth.opinionscope.model.Role.ADMIN;
 import static com.auth.opinionscope.model.Role.MANAGER;
+import static com.auth.opinionscope.model.Role.USERS;
 import static org.springframework.http.HttpMethod.*;
 
 
@@ -42,11 +43,14 @@ public class ProjectSecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("api/v1/auth/*")
                 .permitAll()
-                .requestMatchers("/api/v1/management/**").hasAnyRole(ADMIN.name(), MANAGER.name())
-                .requestMatchers(GET, "/api/v1/admin/**").hasAuthority(ADMIN_READ.name())
-                .requestMatchers(POST, "/api/v1/admin/**").hasAuthority(ADMIN_CREATE.name())
-                .requestMatchers(PUT, "/api/v1/admin/**").hasAuthority(ADMIN_UPDATE.name())
-                .requestMatchers(DELETE, "/api/v1/admin/**").hasAuthority(ADMIN_DELETE.name())
+//                .requestMatchers(GET,"api/v1/questions/*").hasAnyRole(USERS.name())
+                .requestMatchers("api/v1/questions/*").hasAuthority(USERS.name())
+//                .requestMatchers("api/v1/questions/*").hasAuthority(ADMIN.name(), MANAGER.name(),USERS.name())
+
+//                .requestMatchers(GET, "/api/v1/admin/**").hasAuthority(ADMIN_READ.name())
+//                .requestMatchers(POST, "/api/v1/admin/**").hasAuthority(ADMIN_CREATE.name())
+//                .requestMatchers(PUT, "/api/v1/admin/**").hasAuthority(ADMIN_UPDATE.name())
+//                .requestMatchers(DELETE, "/api/v1/admin/**").hasAuthority(ADMIN_DELETE.name())
                 .anyRequest()
                 .authenticated()
                 .and()

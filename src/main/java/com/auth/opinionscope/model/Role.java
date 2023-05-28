@@ -16,7 +16,18 @@ import static com.auth.opinionscope.config.Permission.*;
 @RequiredArgsConstructor
 public enum Role {
 
-    USER(Collections.emptySet()),
+    USERS(Set.of(
+            USERS_READ
+//            ADMIN_READ,
+//            ADMIN_UPDATE,
+//            ADMIN_DELETE,
+//            ADMIN_CREATE,
+//            MANAGER_READ,
+//            MANAGER_UPDATE,
+//            MANAGER_DELETE,
+//            MANAGER_CREATE
+
+    )),
     ADMIN(
             Set.of(
                     ADMIN_READ,

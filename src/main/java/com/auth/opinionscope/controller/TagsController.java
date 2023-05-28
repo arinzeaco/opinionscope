@@ -1,31 +1,29 @@
 package com.auth.opinionscope.controller;
 
 import com.auth.opinionscope.model.Questions;
-import com.auth.opinionscope.model.User;
+import com.auth.opinionscope.model.TagList;
 import com.auth.opinionscope.rest.Response;
-//import com.auth.opinionscope.service.QuestionsService;
 import com.auth.opinionscope.service.QuestionsService;
-import com.auth.opinionscope.service.UserService;
+import com.auth.opinionscope.service.TagsService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
 @Slf4j
-@RequestMapping("api/v1/questions")
+@RequestMapping("api/v1/tags")
 @RestController
-public class QuestionController {
+public class TagsController {
 
     @Autowired
-    QuestionsService questionsService;
+    TagsService tagsService;
 
     @GetMapping(value = "/all")
     public ResponseEntity<Response> getQuestions() {
-        var token = questionsService.getAllQuestions();
+        var token = tagsService.getTags();
         Response response = new Response();
         response.setStatusCode("200");
         response.setStatusMsg("User succesfully registered");
@@ -37,9 +35,9 @@ public class QuestionController {
     }
 
     @PostMapping(value = "/add_questions")
-    public ResponseEntity<Response> addQuestions(@Valid @RequestBody Questions questions) {
+    public ResponseEntity<Response> addQuestions(@Valid @RequestBody TagList tagList) {
 
-        var data = questionsService.addQuestions(questions);
+        var data = tagsService.saveTags(tagList);
         Response response = new Response();
         response.setStatusCode("200");
         response.setStatusMsg("User succesfully registered");

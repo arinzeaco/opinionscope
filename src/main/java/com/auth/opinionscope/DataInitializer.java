@@ -6,7 +6,6 @@
 //import com.auth.opinionscope.model.TagList;
 //import com.auth.opinionscope.repository.OptionsListRepository;
 //import com.auth.opinionscope.repository.QuestionsRepository;
-//import com.auth.opinionscope.repository.TagListRepository;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.boot.CommandLineRunner;
 //import org.springframework.stereotype.Component;
@@ -42,6 +41,6 @@
 //        question.setOptions(optionsList);
 //        question.getTagList().add(tagList);
 //        question.getCountry().add(new Country(/* country data */));
-//        questionsRepository.save(question);
+////        questionsRepository.save(question);
 //    }
 //}

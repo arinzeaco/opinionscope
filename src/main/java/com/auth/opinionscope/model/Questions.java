@@ -1,6 +1,7 @@
 package com.auth.opinionscope.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -17,12 +18,10 @@ public class Questions extends BaseEntity{
     @GenericGenerator(name = "native",strategy = "native")
     private long questionId;
 
-    @Size(min=120, message="Question must be at least 120 characters long")
+    @Size(max=120, message="Question must be at least 120 characters long")
     private String question;
 
-    @Column(nullable = false)
-    @NotEmpty(message = "This field cannot be empty")
-    @Size(min = 6, message = "Password must be at least 6 characters long")
+    @Min(value = 0, message = "Age must be a positive value")
     private int age;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
