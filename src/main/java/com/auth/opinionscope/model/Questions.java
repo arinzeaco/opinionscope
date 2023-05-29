@@ -39,7 +39,7 @@ public class Questions extends BaseEntity{
     private Set<Country> country = new HashSet<>();
 
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "Options_list_id", referencedColumnName = "OptionsListId")
     private OptionsList options;
 }

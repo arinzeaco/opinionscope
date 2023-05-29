@@ -1,3 +1,3 @@
---INSERT INTO `users_contact` (email, password, firstname, lastname, created_at, created_by) VALUES
---('johndoe@example.com', 'password123', 'John', 'Doe', CURRENT_TIMESTAMP, 'system'),
---('janedoe@example.com', 'password456', 'Jane', 'Doe', CURRENT_TIMESTAMP, 'system');
+--INSERT INTO `user_data` (`email`, `password`, `mobile_number`, `country`, `firstname`, `lastname`, `date_of_birth`, `google_auth_id`, `google_auth_secret`, `email_verified`, `mobile_number_verified`, `role`)
+--VALUES
+--('example@email.com', 'password', '1234567890', 'United States', 'John', 'Doe', '1990-01-01', NULL, NULL, FALSE, FALSE, 'ROLE_USER');

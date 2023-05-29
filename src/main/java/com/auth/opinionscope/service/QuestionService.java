@@ -1,7 +1,7 @@
 package com.auth.opinionscope.service;
 
 import com.auth.opinionscope.model.Questions;
-import com.auth.opinionscope.repository.QuestionsRepository;
+import com.auth.opinionscope.repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +13,10 @@ Logger static property in the class at compilation time.
 * */
 
 @Service
-public class QuestionsService {
+public class QuestionService {
 
     @Autowired
-    private QuestionsRepository questionsRepository;
+    private QuestionRepository questionsRepository;
 
 
 

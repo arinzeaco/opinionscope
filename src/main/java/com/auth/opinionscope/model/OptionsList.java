@@ -17,8 +17,8 @@ public class OptionsList {
 
     private String name;
 
-    @OneToMany(mappedBy = "options", fetch = FetchType.LAZY,
+    @ManyToOne(fetch = FetchType.LAZY,
             cascade = CascadeType.PERSIST,targetEntity = Questions.class)
-    private Set<Questions> persons;
+    private Questions optionsSet;
 
 }

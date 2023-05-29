@@ -1,9 +1,7 @@
 package com.auth.opinionscope.controller;
 
-import com.auth.opinionscope.model.Questions;
 import com.auth.opinionscope.model.TagList;
 import com.auth.opinionscope.rest.Response;
-import com.auth.opinionscope.service.QuestionsService;
 import com.auth.opinionscope.service.TagsService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;

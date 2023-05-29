@@ -1,23 +1,3 @@
---create database opinionscope;
---
---use opinionscope;
---
---CREATE TABLE `users_contact` (
---  id INT AUTO_INCREMENT PRIMARY KEY,
---  email VARCHAR(255) NOT NULL UNIQUE,
---  password VARCHAR(255) NOT NULL,
---  phone_number VARCHAR(255) NULL,
---  country VARCHAR(255) NULL,
---  firstname VARCHAR(255) NOT NULL,
---  lastname VARCHAR(255) NOT NULL,
---  date_of_birth DATE NULL,
---  google_auth_id VARCHAR(255) DEFAULT NULL,
---  google_auth_secret VARCHAR(255) DEFAULT NULL,
---  email_verified BOOLEAN NOT NULL DEFAULT FALSE,
---  phone_number_verified BOOLEAN NOT NULL DEFAULT FALSE,
---  `created_at` TIMESTAMP NOT NULL,
---  `created_by` varchar(50) NOT NULL,
---  `updated_at` TIMESTAMP DEFAULT NULL,
---  `updated_by` varchar(50) DEFAULT NULL
---);
---
+--INSERT INTO `user_data` (`email`, `password`, `mobile_number`, `country`, `firstname`, `lastname`, `date_of_birth`, `google_auth_id`, `google_auth_secret`, `email_verified`, `mobile_number_verified`, `role`)
+--VALUES
+--('example@email.com', 'password', '1234567890', 'United States', 'John', 'Doe', '1990-01-01', NULL, NULL, FALSE, FALSE, 'ROLE_USER');

@@ -20,9 +20,9 @@ public class TagList {
 
     private String name;
 
-    @ManyToMany(mappedBy = "tagList", fetch = FetchType.EAGER,cascade = CascadeType.PERSIST,
-            targetEntity = Questions.class)
-    private Set<Questions> questions = new HashSet<>();
+//    @ManyToMany(mappedBy = "tagList", fetch = FetchType.LAZY,
+//            targetEntity = Questions.class)
+//    private Set<Questions> questions = new HashSet<>();
 
 
 }

@@ -5,7 +5,8 @@
 //import com.auth.opinionscope.model.Questions;
 //import com.auth.opinionscope.model.TagList;
 //import com.auth.opinionscope.repository.OptionsListRepository;
-//import com.auth.opinionscope.repository.QuestionsRepository;
+//import com.auth.opinionscope.repository.QuestionRepository;
+//import com.auth.opinionscope.repository.TagsRepository;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.boot.CommandLineRunner;
 //import org.springframework.stereotype.Component;
@@ -13,12 +14,13 @@
 //@Component
 //public class DataInitializer implements CommandLineRunner {
 //
-//    private final QuestionsRepository questionsRepository;
+//    private final QuestionRepository questionsRepository;
 //    private final OptionsListRepository optionsListRepository;
-//    private final TagListRepository tagListRepository;
+//
+//    private final TagsRepository tagListRepository;
 //
 //    @Autowired
-//    public DataInitializer(QuestionsRepository questionsRepository, OptionsListRepository optionsListRepository, TagListRepository tagListRepository) {
+//    public DataInitializer(QuestionRepository questionsRepository, OptionsListRepository optionsListRepository, TagsRepository tagListRepository) {
 //        this.questionsRepository = questionsRepository;
 //        this.optionsListRepository = optionsListRepository;
 //        this.tagListRepository = tagListRepository;

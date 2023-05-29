@@ -1,9 +1,10 @@
 package com.auth.opinionscope;
 
 import com.auth.opinionscope.model.*;
-import com.auth.opinionscope.repository.UserRepository;
-import com.auth.opinionscope.service.OptionsListService;
-import com.auth.opinionscope.service.QuestionsService;
+import com.auth.opinionscope.repository.OptionsListRepository;
+import com.auth.opinionscope.repository.QuestionRepository;
+import com.auth.opinionscope.repository.TagsRepository;
+import com.auth.opinionscope.service.QuestionService;
 import com.auth.opinionscope.service.TagsService;
 import com.auth.opinionscope.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import static com.auth.opinionscope.model.Role.USERS;
 
@@ -29,13 +31,13 @@ public class OpinionScopeApplication implements CommandLineRunner {
     UserService userService;
 
     @Autowired
-    TagsService tagsService;
-
-//    @Autowired
-//    OptionsListService optionsListService;
+    TagsRepository tagsRepository;
 
     @Autowired
-    QuestionsService questionsService;
+    OptionsListRepository optionsListRepository;
+
+    @Autowired
+    QuestionRepository questionRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -61,45 +63,6 @@ public class OpinionScopeApplication implements CommandLineRunner {
         johnDoe.setMobile_number_verified(false);
         johnDoe.setRole(USERS);
         userService.createUser(johnDoe);
-
-        // Create and save OptionsList
-        OptionsList optionsList = new OptionsList();
-        optionsList.setName("Option 1");
-//        optionsListService.saveOptions(optionsList);
-
-        // Create and save TagList
-        TagList tagList = new TagList();
-        tagList.setName("Tag 1");
-        tagsService.saveTags(tagList);
-
-        // Retrieve managed entities
-        TagList managedTagList = tagsService.getTagListById();
-//        OptionsList managedOptionsList = optionsListService.getOptionsListById();
-
-        // Create and save Questions
-        Questions question = new Questions();
-        question.setQuestion("What is your favorite color?");
-        question.setAge(20);
-//        question.setOptions(managedOptionsList);
-        question.getTagList().add(managedTagList);
-        question.getCountry().add(new Country(/* country data */));
-        questionsService.addQuestions(question);
-
-        Questions question2 = new Questions();
-        question2.setQuestion("What is your favorite music genre?");
-        question2.setAge(21);
-//        question2.setOptions(managedOptionsList);
-        question2.getTagList().add(managedTagList);
-        question2.getCountry().add(new Country(/* country data */));
-        questionsService.addQuestions(question2);
-
-        Questions question3 = new Questions();
-        question3.setQuestion("What is your favorite country?");
-        question3.setAge(22);
-//        question2.setOptions(managedOptionsList);
-        question2.getTagList().add(managedTagList);
-        question3.getCountry().add(new Country(/* country data */));
-        questionsService.addQuestions(question3);
 
     }
 }
