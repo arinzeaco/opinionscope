@@ -26,10 +26,8 @@ public class Questions extends BaseEntity{
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name = "question_tag",
-            joinColumns = {
-                    @JoinColumn(name = "question_id", referencedColumnName = "questionId")},
-            inverseJoinColumns = {
-                    @JoinColumn(name = "tag_id", referencedColumnName = "tagId")})
+            joinColumns = { @JoinColumn(name = "question_id", referencedColumnName = "questionId")},
+            inverseJoinColumns = { @JoinColumn(name = "tag_id", referencedColumnName = "tagId")})
     private Set<TagList> tagList = new HashSet<>();
 //
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
@@ -39,7 +37,12 @@ public class Questions extends BaseEntity{
     private Set<Country> country = new HashSet<>();
 
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "Options_list_id", referencedColumnName = "OptionsListId")
-    private OptionsList options;
+
+    @OneToMany( fetch = FetchType.LAZY,
+            cascade = CascadeType.PERSIST,targetEntity = OptionsList.class)
+    private Set<OptionsList> optionsList = new HashSet<>();
+
+//    @OneToMany(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "Options_list_id", referencedColumnName = "OptionsListId")
+//    private OptionsList options;
 }

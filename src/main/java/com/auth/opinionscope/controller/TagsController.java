@@ -19,13 +19,13 @@ public class TagsController {
     @Autowired
     TagsService tagsService;
 
-    @GetMapping(value = "/all")
+    @GetMapping(value = "/add_tag")
     public ResponseEntity<Response> getQuestions() {
-        var token = tagsService.getTags();
+        var tags = tagsService.getTags();
         Response response = new Response();
         response.setStatusCode("200");
         response.setStatusMsg("User succesfully registered");
-        response.setData(token);
+        response.setData(tags);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)

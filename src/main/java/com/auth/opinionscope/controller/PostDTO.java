@@ -13,6 +13,10 @@ public class PostDTO {
 
     private Set<String> tagContents;
 
+    private Set<String> optionContents;
+
+    private Set<String> countryContents;
+
     // Constructors, getters, and setters
 
     // Rest of the class

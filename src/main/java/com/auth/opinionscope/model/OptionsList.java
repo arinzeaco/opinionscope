@@ -15,10 +15,12 @@ public class OptionsList {
     @GenericGenerator(name = "native",strategy = "native")
     private Long OptionsListId;
 
-    private String name;
+    private String options_name;
 
-    @ManyToOne(fetch = FetchType.LAZY,
-            cascade = CascadeType.PERSIST,targetEntity = Questions.class)
-    private Questions optionsSet;
+    private int votecount;
+
+//    @ManyToOne(fetch = FetchType.LAZY,
+//            cascade = CascadeType.PERSIST,targetEntity = Questions.class)
+//    private OptionsList optionList;
 
 }

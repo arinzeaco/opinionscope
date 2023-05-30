@@ -20,7 +20,6 @@ public class Country {
             targetEntity = Questions.class)
     private Set<Questions> country = new HashSet<>();
 
-
-
+    private String country_name;
 
 }
