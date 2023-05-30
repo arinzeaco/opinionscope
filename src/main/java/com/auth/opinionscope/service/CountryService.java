@@ -1,6 +1,8 @@
 package com.auth.opinionscope.service;
 
+import com.auth.opinionscope.model.Country;
 import com.auth.opinionscope.model.Tags;
+import com.auth.opinionscope.repository.CountryRepository;
 import com.auth.opinionscope.repository.TagsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,26 +15,26 @@ Logger static property in the class at compilation time.
 * */
 
 @Service
-public class TagsService {
+public class CountryService {
 
     @Autowired
-    private TagsRepository tagsRepository;
+    private CountryRepository countryRepository;
 
 
 
-    public List<Tags> getTags() {
+    public List<Country> getCountry() {
 
-        List<Tags> savedUser = tagsRepository.findAll();
-        return savedUser;
+        List<Country> saveCountry = countryRepository.findAll();
+        return saveCountry;
     }
 
 
 
-    public boolean saveTags(Tags tags) {
+    public boolean saveCountry(Country country) {
         boolean isSaved = false;
 
-        Tags savedQuestion = tagsRepository.save(tags);
-        if (null != savedQuestion && savedQuestion.getTagId() > 0)
+        Country saveCountry = countryRepository.save(country);
+        if (null != saveCountry && saveCountry.getCountryId() > 0)
         {
             isSaved = true;
         }

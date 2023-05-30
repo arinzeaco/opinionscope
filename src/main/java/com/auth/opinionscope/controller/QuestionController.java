@@ -1,9 +1,8 @@
 package com.auth.opinionscope.controller;
 
-import com.auth.opinionscope.model.Country;
-import com.auth.opinionscope.model.OptionsList;
+import com.auth.opinionscope.model.Options;
 import com.auth.opinionscope.model.Questions;
-import com.auth.opinionscope.model.TagList;
+import com.auth.opinionscope.model.Tags;
 import com.auth.opinionscope.repository.QuestionRepository;
 import com.auth.opinionscope.rest.Response;
 //import com.auth.opinionscope.service.QuestionsService;
@@ -47,23 +46,16 @@ public class QuestionController {
     public ResponseEntity<Response> addQuestions(@Valid @RequestBody PostDTO postDTO) {
         Questions questions = new Questions();
         questions.setQuestion(postDTO.getTitle());
-        questions.setAge(4);
+        questions.setAge(18);
+        questions.setTags(postDTO.getTagContents());
+        questions.setCountry(postDTO.getCountryContents());
 
-        Set<TagList> tags = new HashSet<>();
-        for (String tagContent : postDTO.getTagContents()) {
-            TagList tag = new TagList();
-            tag.setName(tagContent);
-            tags.add(tag); // Save the tag to generate its ID
-
-        }
-        Set<OptionsList> options = new HashSet<>();
+        Set<Options> options = new HashSet<>();
         for (String optionsContent : postDTO.getOptionContents()) {
-            OptionsList option = new OptionsList();
+            Options option = new Options();
             option.setOptions_name(optionsContent);
             option.setVotecount(0);
             options.add(option);
-//            Logoption.getOptionsListId()
-            // Save the tag to generate its ID
         }
 
 //        Set<Country> countries = new HashSet<>();
@@ -76,8 +68,7 @@ public class QuestionController {
 //        }
 
 //        questions.setCountry(countries);
-        questions.setTagList(tags);
-        questions.setOptionsList(options);
+        questions.setOptions(options);
 
         var data = questionRepository.save(questions);
         Response response = new Response();

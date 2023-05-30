@@ -4,13 +4,11 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.util.HashSet;
-import java.util.Set;
-
 
 @Data
 @Entity
-public class TagList {
+@Table(name="tags")
+public class Tags extends BaseEntity{
 
 
     @Id
@@ -18,7 +16,7 @@ public class TagList {
     @GenericGenerator(name = "native",strategy = "native")
     private Long tagId;
 
-    private String name;
+    public String tagName;
 
 //    @ManyToMany(mappedBy = "tagList", fetch = FetchType.LAZY,
 //            targetEntity = Questions.class)

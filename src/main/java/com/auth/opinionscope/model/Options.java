@@ -4,11 +4,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.util.Set;
-
 @Data
 @Entity
-public class OptionsList {
+public class Options {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO,generator="native")

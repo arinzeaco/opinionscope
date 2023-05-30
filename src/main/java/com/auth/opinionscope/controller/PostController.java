@@ -1,7 +1,7 @@
 package com.auth.opinionscope.controller;
 
 import com.auth.opinionscope.model.Questions;
-import com.auth.opinionscope.model.TagList;
+import com.auth.opinionscope.model.Tags;
 import com.auth.opinionscope.repository.QuestionRepository;
 import com.auth.opinionscope.repository.TagsRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -32,15 +32,15 @@ public class PostController {
         questions.setQuestion(postDTO.getTitle());
         questions.setAge(4);
 
-        Set<TagList> tags = new HashSet<>();
-        for (String tagContent : postDTO.getTagContents()) {
-            TagList tag = new TagList();
-            tag.setName(tagContent);
-            tags.add(tag); // Save the tag to generate its ID
-
-        }
-
-        questions.setTagList(tags);
+//        Set<Tags> tags = new HashSet<>();
+//        for (String tagContent : postDTO.getTagContents()) {
+//            Tags tag = new Tags();
+//            tag.setTagName(tagContent);
+//            tags.add(tag); // Save the tag to generate its ID
+//
+//        }
+//
+//        questions.setTags(tags);
         questionRepository.save(questions);
 
         return ResponseEntity.ok("Post created successfully.");

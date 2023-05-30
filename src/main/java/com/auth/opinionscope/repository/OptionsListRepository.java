@@ -1,11 +1,9 @@
 package com.auth.opinionscope.repository;
 
-import com.auth.opinionscope.model.OptionsList;
+import com.auth.opinionscope.model.Options;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Optional;
-
-public interface OptionsListRepository extends JpaRepository<OptionsList, Integer> {
+public interface OptionsListRepository extends JpaRepository<Options, Integer> {
 //    Optional<OptionsList> findById(long id);
 //   OptionsList getAllByOptionsId(long id);
 

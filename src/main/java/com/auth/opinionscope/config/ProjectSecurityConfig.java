@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -43,8 +44,16 @@ public class ProjectSecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("api/v1/auth/*")
                 .permitAll()
-//                .requestMatchers(GET,"api/v1/questions/*").hasAnyRole(USERS.name())
-                .requestMatchers("api/v1/questions/*").hasAuthority(USERS.name())
+//                .requestMatchers("api/v1/questions/*").hasAnyRole(USERS.name(), ADMIN.name())
+                .requestMatchers(HttpMethod.GET, "/api/v1/questions/**").hasAnyAuthority(USERS.name(),ADMIN.name())
+                .requestMatchers(HttpMethod.POST, "/api/v1/questions/**").hasAuthority( ADMIN.name())
+
+                .requestMatchers(HttpMethod.GET, "/api/v1/tags/**").hasAnyAuthority(USERS.name(),ADMIN.name())
+                .requestMatchers(HttpMethod.POST, "/api/v1/tags/**").hasAuthority( ADMIN.name())
+
+                .requestMatchers(HttpMethod.GET, "/api/v1/Options/**").hasAnyAuthority(USERS.name(),ADMIN.name())
+                .requestMatchers(HttpMethod.POST, "/api/v1/Options/**").hasAuthority( ADMIN.name())
+                //                .requestMatchers("api/v1/questions/*").hasAuthority(USERS.name())
 //                .requestMatchers("api/v1/questions/*").hasAuthority(ADMIN.name(), MANAGER.name(),USERS.name())
 
 //                .requestMatchers(GET, "/api/v1/admin/**").hasAuthority(ADMIN_READ.name())

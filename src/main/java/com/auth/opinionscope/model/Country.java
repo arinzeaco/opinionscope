@@ -16,9 +16,6 @@ public class Country {
     @GenericGenerator(name = "native",strategy = "native")
     private Long countryId;
 
-    @ManyToMany(mappedBy = "country", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST,
-            targetEntity = Questions.class)
-    private Set<Questions> country = new HashSet<>();
 
     private String country_name;
 

@@ -17,7 +17,4 @@ public class PostDTO {
 
     private Set<String> countryContents;
 
-    // Constructors, getters, and setters
-
-    // Rest of the class
 }

@@ -2,6 +2,7 @@ package com.auth.opinionscope.controller;
 
 import com.auth.opinionscope.model.Tags;
 import com.auth.opinionscope.rest.Response;
+import com.auth.opinionscope.service.CountryService;
 import com.auth.opinionscope.service.TagsService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -12,16 +13,16 @@ import org.springframework.web.bind.annotation.*;
 
 
 @Slf4j
-@RequestMapping("api/v1/tags")
+@RequestMapping("api/v1/country")
 @RestController
-public class TagsController {
+public class CountryController {
 
     @Autowired
-    TagsService tagsService;
+    CountryService countryService;
 
-    @GetMapping(value = "/get_tags")
+    @GetMapping(value = "/get_countries")
     public ResponseEntity<Response> getQuestions() {
-        var tags = tagsService.getTags();
+        var tags = countryService.getCountry();
         Response response = new Response();
         response.setStatusCode("200");
         response.setStatusMsg("Tags");
@@ -32,19 +33,19 @@ public class TagsController {
                 .body(response);
     }
 
-    @PostMapping(value = "/add_tags")
-    public ResponseEntity<Response> addQuestions(@Valid @RequestBody Tags tags) {
-
-        var data = tagsService.saveTags(tags);
-        Response response = new Response();
-        response.setStatusCode("200");
-        response.setStatusMsg("User succesfully registered");
-        response.setData(data);
-
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(response);
-    }
+//    @PostMapping(value = "/add_tags")
+//    public ResponseEntity<Response> addQuestions(@Valid @RequestBody Tags tags) {
+//
+//        var data = tagsService.saveTags(tags);
+//        Response response = new Response();
+//        response.setStatusCode("200");
+//        response.setStatusMsg("User succesfully registered");
+//        response.setData(data);
+//
+//        return ResponseEntity
+//                .status(HttpStatus.CREATED)
+//                .body(response);
+//    }
 
 
 }

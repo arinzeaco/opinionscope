@@ -1,14 +1,8 @@
 package com.auth.opinionscope.service;
 
-import com.auth.opinionscope.model.OptionsList;
-import com.auth.opinionscope.model.TagList;
 import com.auth.opinionscope.repository.OptionsListRepository;
-import com.auth.opinionscope.repository.TagsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 /*
 @Slf4j, is a Lombok-provided annotation that will automatically generate an SLF4J
