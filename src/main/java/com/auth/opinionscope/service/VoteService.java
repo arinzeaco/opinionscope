@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /*
 @Slf4j, is a Lombok-provided annotation that will automatically generate an SLF4J
@@ -27,13 +28,25 @@ public class VoteService {
 
         return savedVote;
     }
+    public boolean getUserIdAndOptionsListId(long userId, long OptionsListId) {
+//        boolean isVoted = voteRepository.findFirstByUserId(userId);
+        Optional<VoteCount> optional = voteRepository.findByUserIdAndOptionsListId(userId,OptionsListId);
 
-    public List<VoteCount> getVotes() {
-
-        List<VoteCount> voteCount=voteRepository.findAll();
-
-        return voteCount;
+//        Optional< VoteCount > optional = voteRepository.findById(id2);
+//
+//        if (optional.isPresent()) {
+//            System.out.println(optional.get());
+//        } else {
+//            System.out.printf("No employee found with id %d%n", id2);
+//        }
+        return optional.isPresent();
     }
+//    public List<VoteCount> getVotes(long userId) {
+//
+//        List<VoteCount> voteCount=voteRepository.findFirstById();
+//
+//        return voteCount;
+//    }
 
 
 

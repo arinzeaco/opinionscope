@@ -1,8 +1,8 @@
 package com.auth.opinionscope.controller;
 
+import com.auth.opinionscope.dataModel.PostDto;
 import com.auth.opinionscope.model.Options;
 import com.auth.opinionscope.model.Questions;
-import com.auth.opinionscope.model.Tags;
 import com.auth.opinionscope.repository.QuestionRepository;
 import com.auth.opinionscope.rest.Response;
 //import com.auth.opinionscope.service.QuestionsService;
@@ -29,12 +29,12 @@ public class QuestionController {
     @Autowired
     private QuestionRepository questionRepository;
 
-    @GetMapping(value = "/all")
-    public ResponseEntity<Response> getQuestions() {
-        var questions = questionsService.getAllQuestions();
+    @GetMapping(value = "/all/{userId}/{optionsListId}")
+    public ResponseEntity<Response> getQuestions(@PathVariable("userId") long userId,@PathVariable("optionsListId") long optionsListId) {
+        var questions = questionsService.getAllQuestions(userId,optionsListId);
         Response response = new Response();
         response.setStatusCode("200");
-        response.setStatusMsg("All succesfully registered");
+        response.setStatusMsg("Questions Gotten Successfully");
         response.setData(questions);
 
         return ResponseEntity
@@ -43,7 +43,7 @@ public class QuestionController {
     }
 
     @PostMapping(value = "/add_questions")
-    public ResponseEntity<Response> addQuestions(@Valid @RequestBody PostDTO postDTO) {
+    public ResponseEntity<Response> addQuestions(@Valid @RequestBody PostDto postDTO) {
         Questions questions = new Questions();
         questions.setQuestion(postDTO.getTitle());
         questions.setAge(18);
@@ -57,17 +57,6 @@ public class QuestionController {
             option.setVotecount(0);
             options.add(option);
         }
-
-//        Set<Country> countries = new HashSet<>();
-//        for (String optionsContent : postDTO.getCountryContents()) {
-//            Country country = new Country();
-//            country.setCountry_name(optionsContent);
-//            countries.add(country);
-////            Logoption.getOptionsListId()
-//            // Save the tag to generate its ID
-//        }
-
-//        questions.setCountry(countries);
         questions.setOptions(options);
 
         var data = questionRepository.save(questions);
@@ -80,6 +69,5 @@ public class QuestionController {
                 .status(HttpStatus.CREATED)
                 .body(response);
     }
-
 
 }

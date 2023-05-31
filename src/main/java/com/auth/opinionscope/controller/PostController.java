@@ -1,7 +1,7 @@
 package com.auth.opinionscope.controller;
 
+import com.auth.opinionscope.dataModel.PostDto;
 import com.auth.opinionscope.model.Questions;
-import com.auth.opinionscope.model.Tags;
 import com.auth.opinionscope.repository.QuestionRepository;
 import com.auth.opinionscope.repository.TagsRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -11,9 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Slf4j
 @RequestMapping("api/v1/questions")
@@ -27,7 +24,7 @@ public class PostController {
     private TagsRepository tagRepository;
 
     @PostMapping(value = "/add_question")
-    public ResponseEntity<?> createPost(@RequestBody PostDTO postDTO) {
+    public ResponseEntity<?> createPost(@RequestBody PostDto postDTO) {
         Questions questions = new Questions();
         questions.setQuestion(postDTO.getTitle());
         questions.setAge(4);

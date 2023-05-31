@@ -39,11 +39,11 @@ public class VoteController {
     public ResponseEntity<Response> getVote() {
         log.info("TTTTTTTsss: One");
 
-        var data = voteService.getVotes();
+//        var data = voteService.getVotes();
         Response response = new Response();
         response.setStatusCode("200");
         response.setStatusMsg("Vote fetched succesfully");
-        response.setData(data);
+//        response.setData(data);
 
         return ResponseEntity
                 .status(HttpStatus.FOUND)

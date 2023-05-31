@@ -3,12 +3,20 @@ package com.auth.opinionscope.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.HashSet;
 import java.util.Set;
 
+
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name="questions")
 @Entity
 @Data
 public class Questions extends BaseEntity{
@@ -16,6 +24,7 @@ public class Questions extends BaseEntity{
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO,generator="native")
     @GenericGenerator(name = "native",strategy = "native")
+    @Column(name = "question_id")
     private long questionId;
 
     @Size(max=120, message="Question must be at least 120 characters long")

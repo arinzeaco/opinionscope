@@ -18,6 +18,8 @@ public class Options {
 
     private int votecount;
 
+    boolean userVoted;
+
 //    @ManyToOne(fetch = FetchType.LAZY,
 //            cascade = CascadeType.PERSIST,targetEntity = Questions.class)
 //    private OptionsList optionList;

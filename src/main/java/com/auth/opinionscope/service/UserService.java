@@ -84,8 +84,6 @@ public class UserService {
         log.info("jwtToken");
         log.info(jwtToken);
 //        saveUserEmailToken(user);
-
-
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
