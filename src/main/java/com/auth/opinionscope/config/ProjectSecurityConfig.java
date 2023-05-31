@@ -53,6 +53,9 @@ public class ProjectSecurityConfig {
 
                 .requestMatchers(HttpMethod.GET, "/api/v1/Options/**").hasAnyAuthority(USERS.name(),ADMIN.name())
                 .requestMatchers(HttpMethod.POST, "/api/v1/Options/**").hasAuthority( ADMIN.name())
+
+                .requestMatchers(HttpMethod.GET, "/api/v1/votes/**").hasAnyAuthority(USERS.name(),ADMIN.name())
+                .requestMatchers(HttpMethod.POST, "/api/v1/votes/**").hasAuthority(ADMIN.name())
                 //                .requestMatchers("api/v1/questions/*").hasAuthority(USERS.name())
 //                .requestMatchers("api/v1/questions/*").hasAuthority(ADMIN.name(), MANAGER.name(),USERS.name())
 

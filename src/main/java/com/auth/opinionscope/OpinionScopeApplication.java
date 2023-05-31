@@ -1,12 +1,9 @@
 package com.auth.opinionscope;
 
 import com.auth.opinionscope.model.*;
-import com.auth.opinionscope.repository.CountryRepository;
 import com.auth.opinionscope.repository.OptionsListRepository;
 import com.auth.opinionscope.repository.QuestionRepository;
-import com.auth.opinionscope.repository.TagsRepository;
 import com.auth.opinionscope.service.CountryService;
-import com.auth.opinionscope.service.QuestionService;
 import com.auth.opinionscope.service.TagsService;
 import com.auth.opinionscope.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,15 +14,10 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import static com.auth.opinionscope.model.Role.ADMIN;
 import static com.auth.opinionscope.model.Role.USERS;
