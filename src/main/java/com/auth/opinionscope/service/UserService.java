@@ -13,13 +13,18 @@ import com.auth.opinionscope.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 /*
@@ -43,8 +48,8 @@ public class UserService {
     @Autowired
     private JwtService jwtService;
 
-    @Autowired
-    private EmailService emailService;
+//    @Autowired
+//    private EmailService emailService;
 
     @Autowired
     private TokenRepository tokenRepository;
@@ -155,5 +160,14 @@ public class UserService {
         return savedUser;
     }
 
+    public ResponseEntity<User> verifyEmail(String email) {
+        Optional<User> user = usersRepository.findByEmail(email);
+        if (user.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        user.get().setEmail_verified(true);
 
+        usersRepository.save(user.get());
+        return new ResponseEntity<>(user.get(), HttpStatus.OK);
+    }
 }

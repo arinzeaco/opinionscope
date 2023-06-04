@@ -43,7 +43,7 @@ public class ProjectSecurityConfig {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("api/v1/auth/*")
+                .requestMatchers("api/v1/auth/*","api/v1/otp/*")
                 .permitAll()
                 .requestMatchers("/api/v1/test/**").hasAnyRole(ADMIN.name(), MANAGER.name())
 

@@ -3,7 +3,6 @@ package com.auth.opinionscope.controller;
 import com.auth.opinionscope.config.AuthenticationRequest;
 import com.auth.opinionscope.model.User;
 import com.auth.opinionscope.rest.Response;
-import com.auth.opinionscope.service.EmailService;
 import com.auth.opinionscope.service.UserService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -20,9 +19,9 @@ public class RegisterController {
 
     @Autowired
     UserService userService;
-
-    @Autowired
-    EmailService emailService;
+//
+//    @Autowired
+//    EmailService emailService;
 
 
     @PostMapping(value = "/createUser")
