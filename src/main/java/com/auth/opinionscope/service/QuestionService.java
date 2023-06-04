@@ -1,6 +1,6 @@
 package com.auth.opinionscope.service;
 
-import com.auth.opinionscope.model.Options;
+//import com.auth.opinionscope.model.Options;
 import com.auth.opinionscope.model.Questions;
 import com.auth.opinionscope.repository.QuestionRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -18,18 +18,16 @@ public class QuestionService {
     @Autowired
     private QuestionRepository questionsRepository;
 
-    @Autowired
-    private VoteService voteService;
 
     public List<Questions> getAllQuestions(@RequestParam("userId") long userId,
                                            @RequestParam("optionsListId") long ptionsListId) {
 //        op.setUserVoted(voteService.getUserIdAndOptionsListId(userId,OptionsListId));
 
         List<Questions> savedUser = questionsRepository.findAll();
-        for (Options op : savedUser.get(0).getOptions()) {
-            long count = voteService.getVoteById(op.getOptionsListId());
-            op.setVotecount((int) count);
-        }
+//        for (String op : savedUser.get(0).getOptions()) {
+//            long count = voteService.getVoteById(op.getOptionsListId());
+//            op.setVotecount((int) count);
+//        }
         return savedUser;
     }
 

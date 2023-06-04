@@ -86,6 +86,22 @@ public class RegisterController {
                 .body(response);
     }
 
+    @PostMapping(value = "/logout")
+    public ResponseEntity<Response> logout(@Valid @RequestBody AuthenticationRequest request) {
+
+        var token = userService.authenticate(request);
+
+        Response response = new Response();
+        response.setStatusCode("200");
+        response.setStatusMsg("Message saved successfully");
+        response.setData(token);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .header("isMsgSaved", "true")
+                .body(response);
+    }
+
 
 
 }

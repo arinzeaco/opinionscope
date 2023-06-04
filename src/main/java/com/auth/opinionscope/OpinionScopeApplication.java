@@ -26,7 +26,7 @@ import static com.auth.opinionscope.model.Role.USERS;
 @EntityScan("com.auth.opinionscope.model")
 @SpringBootApplication
 @EnableJpaAuditing(auditorAwareRef = "auditAwareImpl")
-public class OpinionScopeApplication implements CommandLineRunner {
+public class OpinionScopeApplication{
     @Autowired
     UserService userService;
 
@@ -50,13 +50,13 @@ public class OpinionScopeApplication implements CommandLineRunner {
         SpringApplication.run(OpinionScopeApplication.class, args);
     }
 
-    @Override
-    public void run(String... args) throws Exception {
-        adduser();
-        addManger();
-        addtag();
-        loadCountriesFromFile();
-    }
+//    @Override
+//    public void run(String... args) throws Exception {
+//        adduser();
+//        addManger();
+//        addtag();
+//        loadCountriesFromFile();
+//    }
 
     public void adduser() {
         User user = new User();

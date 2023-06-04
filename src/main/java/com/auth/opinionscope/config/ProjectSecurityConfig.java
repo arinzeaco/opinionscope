@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 import static com.auth.opinionscope.config.Permission.*;
 import static com.auth.opinionscope.model.Role.ADMIN;
@@ -44,18 +45,20 @@ public class ProjectSecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("api/v1/auth/*")
                 .permitAll()
+                .requestMatchers("/api/v1/test/**").hasAnyRole(ADMIN.name(), MANAGER.name())
+
 //                .requestMatchers("api/v1/questions/*").hasAnyRole(USERS.name(), ADMIN.name())
-                .requestMatchers(HttpMethod.GET, "/api/v1/questions/**").hasAnyAuthority(USERS.name(),ADMIN.name())
-                .requestMatchers(HttpMethod.POST, "/api/v1/questions/**").hasAuthority( ADMIN.name())
-
-                .requestMatchers(HttpMethod.GET, "/api/v1/tags/**").hasAnyAuthority(USERS.name(),ADMIN.name())
-                .requestMatchers(HttpMethod.POST, "/api/v1/tags/**").hasAuthority( ADMIN.name())
-
-                .requestMatchers(HttpMethod.GET, "/api/v1/Options/**").hasAnyAuthority(USERS.name(),ADMIN.name())
-                .requestMatchers(HttpMethod.POST, "/api/v1/Options/**").hasAuthority( ADMIN.name())
-
-                .requestMatchers(HttpMethod.GET, "/api/v1/votes/**").hasAnyAuthority(USERS.name(),ADMIN.name())
-                .requestMatchers(HttpMethod.POST, "/api/v1/votes/**").hasAuthority(ADMIN.name())
+//                .requestMatchers("api/v1/test/**").authenticated()
+////                .requestMatchers(HttpMethod.POST, "/api/v1/questions/*").hasAnyRole( ADMIN.name())
+//
+//                .requestMatchers(HttpMethod.GET, "/api/v1/tags/**").hasAnyAuthority(USERS.name(),ADMIN.name())
+//                .requestMatchers(HttpMethod.POST, "/api/v1/tags/**").hasAuthority( ADMIN.name())
+//
+//                .requestMatchers(HttpMethod.GET, "/api/v1/Options/**").hasAnyAuthority(USERS.name(),ADMIN.name())
+//                .requestMatchers(HttpMethod.POST, "/api/v1/Options/**").hasAuthority( ADMIN.name())
+//
+//                .requestMatchers(HttpMethod.GET, "/api/v1/votes/**").hasAnyAuthority(USERS.name(),ADMIN.name())
+//                .requestMatchers(HttpMethod.POST, "/api/v1/votes/**").hasAuthority(ADMIN.name())
                 //                .requestMatchers("api/v1/questions/*").hasAuthority(USERS.name())
 //                .requestMatchers("api/v1/questions/*").hasAuthority(ADMIN.name(), MANAGER.name(),USERS.name())
 

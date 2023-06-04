@@ -13,12 +13,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-@Builder
+//@Builder
+
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="questions")
 @Entity
-@Data
+@Table(name="questions")
 public class Questions extends BaseEntity{
 
     @Id
@@ -53,9 +54,9 @@ public class Questions extends BaseEntity{
 
 
 
-    @OneToMany( fetch = FetchType.EAGER,
-            cascade = CascadeType.PERSIST,targetEntity = Options.class)
-    private Set<Options> options = new HashSet<>();
+//    @OneToMany( fetch = FetchType.EAGER,
+//            cascade = CascadeType.PERSIST,targetEntity = Options.class)
+    private Set<String> options = new HashSet<>();
 
 //    @OneToMany(fetch = FetchType.EAGER)
 //    @JoinColumn(name = "Options_list_id", referencedColumnName = "OptionsListId")

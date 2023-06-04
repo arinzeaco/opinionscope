@@ -33,19 +33,5 @@ public class CountryController {
                 .body(response);
     }
 
-//    @PostMapping(value = "/add_tags")
-//    public ResponseEntity<Response> addQuestions(@Valid @RequestBody Tags tags) {
-//
-//        var data = tagsService.saveTags(tags);
-//        Response response = new Response();
-//        response.setStatusCode("200");
-//        response.setStatusMsg("User succesfully registered");
-//        response.setData(data);
-//
-//        return ResponseEntity
-//                .status(HttpStatus.CREATED)
-//                .body(response);
-//    }
-
 
 }
