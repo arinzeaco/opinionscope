@@ -1,5 +1,5 @@
 
-package com.auth.opinionscope.config;
+package com.auth.opinionscope.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -17,4 +17,5 @@ public class AuthenticationResponse {
   private String accessToken;
   @JsonProperty("refresh_token")
   private String refreshToken;
+
 }

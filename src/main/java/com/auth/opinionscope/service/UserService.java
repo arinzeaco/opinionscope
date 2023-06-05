@@ -1,7 +1,6 @@
 package com.auth.opinionscope.service;
 
 import com.auth.opinionscope.config.AuthenticationRequest;
-import com.auth.opinionscope.config.AuthenticationResponse;
 import com.auth.opinionscope.config.JwtService;
 import com.auth.opinionscope.model.User;
 import com.auth.opinionscope.model.token.Token;
@@ -10,18 +9,12 @@ import com.auth.opinionscope.model.token.TokenType;
 import com.auth.opinionscope.repository.TokenRepository;
 import com.auth.opinionscope.repository.UserRepository;
 //import com.auth.opinionscope.repository.VerificationTokenRepository;
+import com.auth.opinionscope.rest.JwtWithResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -48,8 +41,8 @@ public class UserService {
     @Autowired
     private JwtService jwtService;
 
-//    @Autowired
-//    private EmailService emailService;
+    @Autowired
+    private EmailVerificationService emailVerificationService;
 
     @Autowired
     private TokenRepository tokenRepository;
@@ -68,52 +61,75 @@ public class UserService {
     }
 
 
-    public AuthenticationResponse createUser(User users) {
+    public JwtWithResponse createUser(User users) {
 
         var user = User.builder()
                 .firstname(users.getFirstname())
                 .lastname(users.getLastname())
                 .mobile_number(users.getMobile_number())
                 .email(users.getEmail())
-                .password(passwordEncoder.encode("12345678"))
-//                .password(passwordEncoder.encode(users.getPassword()))
                 .role(users.getRole())
                 .email_verified(users.getEmail_verified())
                 .mobile_number_verified(users.getMobile_number_verified())
                 .build();
 
+        String password = users.getPassword();
+        if (password != null) {
+            user.setPassword(passwordEncoder.encode(password));
+        }
+
         var savedUser = usersRepository.save(user);
         var jwtToken = jwtService.generateJwtToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
 
-        saveUserToken(savedUser, jwtToken,TokenType.BEARER);
-        saveUserToken(savedUser, generateToken(),TokenType.CONFIRMATION);
+        saveUserToken(savedUser, jwtToken, TokenType.BEARER);
         log.info("jwtToken");
         log.info(jwtToken);
-//        saveUserEmailToken(user);
-        return AuthenticationResponse.builder()
-                .accessToken(jwtToken)
-                .refreshToken(refreshToken)
-                .build();
+        emailVerificationService.createVerification(users.getEmail());
+
+        JwtWithResponse response = new JwtWithResponse();
+        response.setStatusCode("200");
+        response.setStatusMsg("User successfully registered");
+        response.setData(users);
+        response.setAccess_token(jwtToken);
+        response.setRefresh_token(refreshToken);
+
+        return response;
     }
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
-        );
+    public JwtWithResponse authenticate(AuthenticationRequest request) {
+//        authenticationManager.authenticate(
+//                new UsernamePasswordAuthenticationToken(
+//                        request.getEmail(),
+//                        request.getPassword()
+//                )
+//        );
         var user = usersRepository.findByEmail(request.getEmail())
                 .orElseThrow();
         var jwtToken = jwtService.generateJwtToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         revokeAllUserTokens(user);
-        saveUserToken(user, jwtToken, TokenType.CONFIRMATION);
-        return AuthenticationResponse.builder()
-                .accessToken(jwtToken)
-                .refreshToken(refreshToken)
-                .build();
+//        return AuthenticationResponse.builder()
+//                .accessToken(jwtToken)
+//                .refreshToken(refreshToken)
+//                .data(user)
+//                .build();
+        JwtWithResponse response = new JwtWithResponse();
+        response.setStatusCode("200");
+        response.setStatusMsg("User succesfully registered");
+        response.setData(user);
+        response.setAccess_token(jwtToken);
+        response.setRefresh_token(refreshToken);
+//        Response response = new Response();
+//        response.setStatusCode("200");
+//        response.setStatusMsg("Message saved successfully");
+//        response.setData(user);
+//
+//        return ResponseEntity
+//                .status(HttpStatus.CREATED)
+//                .header("isMsgSaved", "true")
+//                .body(response);
+        return response;
     }
 
     public String generateToken() {
@@ -123,6 +139,7 @@ public class UserService {
         int randomNumber = random.nextInt(max - min + 1) + min;
         return String.valueOf(randomNumber);
     }
+
     private void saveUserToken(User user, String tokenVal, TokenType confirmation) {
         var token = Token.builder()
                 .user(user)
@@ -160,14 +177,14 @@ public class UserService {
         return savedUser;
     }
 
-    public ResponseEntity<User> verifyEmail(String email) {
+    public boolean verifyEmail(String email) {
         Optional<User> user = usersRepository.findByEmail(email);
         if (user.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return false;
         }
         user.get().setEmail_verified(true);
 
-        usersRepository.save(user.get());
-        return new ResponseEntity<>(user.get(), HttpStatus.OK);
+        User savedUser = usersRepository.save(user.get());
+        return savedUser.getUserId() != null; // Return true if save operation was successful
     }
 }

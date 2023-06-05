@@ -24,7 +24,8 @@ public class EmailVerificationService {
         this.emailVerificationRepository = emailVerificationRepository;
     }
 
-    public void createVerification(String email, String otp) {
+    public void createVerification(String email) {
+        String otp= generateOTP();
         EmailVerification emailVerification = new EmailVerification();
         emailVerification.setEmail(email);
         emailVerification.setOtp(otp);
@@ -32,9 +33,17 @@ public class EmailVerificationService {
         log.info("PPPPPPPP The pass"+ otp);
 
         emailVerificationRepository.save(emailVerification);
-
 //        sendMail(email,otp);
         // Send the email with the OTP to the user's email address
+    }
+    public String generateOTP() {
+        // Logic to generate a random 6-digit OTP
+        // Implement your own logic or use a library for generating random OTPs
+        // Example:
+        int minOTPValue = 100000;
+        int maxOTPValue = 999999;
+        int otpValue = (int) (Math.random() * (maxOTPValue - minOTPValue + 1) + minOTPValue);
+        return String.valueOf(otpValue);
     }
 
     public boolean validateOTP(String email, String otp) {

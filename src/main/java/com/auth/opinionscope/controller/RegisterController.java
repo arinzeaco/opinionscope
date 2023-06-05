@@ -2,13 +2,16 @@ package com.auth.opinionscope.controller;
 
 import com.auth.opinionscope.config.AuthenticationRequest;
 import com.auth.opinionscope.model.User;
+import com.auth.opinionscope.rest.JwtWithResponse;
 import com.auth.opinionscope.rest.Response;
+import com.auth.opinionscope.service.EmailVerificationService;
 import com.auth.opinionscope.service.UserService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -19,43 +22,31 @@ public class RegisterController {
 
     @Autowired
     UserService userService;
-//
-//    @Autowired
-//    EmailService emailService;
+    //
+    @Autowired
+    EmailVerificationService emailVerificationService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PostMapping(value = "/createUser")
-    public ResponseEntity<Response> createUser(@Valid @RequestBody User user) {
+    public JwtWithResponse createUser(@Valid @RequestBody User user) {
 
         var checkIfUserAlreadyExist = userService.checkIfUserAlreadyExist(user);
         if (checkIfUserAlreadyExist) {
-            Response response = new Response();
+            JwtWithResponse response = new JwtWithResponse();
             response.setStatusCode("400");
             response.setStatusMsg("User Already exist");
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(response);
+            return response;
         }
-
-        var token = userService.createUser(user);
-
-        Response response = new Response();
-        response.setStatusCode("200");
-        response.setStatusMsg("User succesfully registered");
-        response.setData(token);
-//        emailService.sendMail(user);
-//        emailService.createVerificationToken(user);
+        var createUser = userService.createUser(user);
 
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(response);
-
+        return createUser;
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<Response> getcontact(@Valid @RequestBody AuthenticationRequest request) {
-
+    public ResponseEntity<Response> login(@Valid @RequestBody AuthenticationRequest request) {
         var token = userService.authenticate(request);
 
         Response response = new Response();
@@ -100,7 +91,6 @@ public class RegisterController {
                 .header("isMsgSaved", "true")
                 .body(response);
     }
-
 
 
 }

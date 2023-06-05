@@ -2,6 +2,7 @@ package com.auth.opinionscope.model;
 
 import com.auth.opinionscope.model.token.Token;
 //import com.auth.opinionscope.model.token.VerificationToken;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -23,6 +24,7 @@ import java.util.List;
 public class User extends BaseEntity implements UserDetails {
 
     @Id
+    @JsonIgnore
     @GeneratedValue(strategy= GenerationType.AUTO,generator="native")
     @GenericGenerator(name = "native",strategy = "native")
     @Column(name = "user_id")
@@ -33,13 +35,12 @@ public class User extends BaseEntity implements UserDetails {
     @NotEmpty(message = "This field cannot be empty")
     private String email;
 
-    @NotBlank(message="Password must not be blank")
+    @JsonIgnore
     @Size(min=5, message="Password must be at least 5 characters long")
     private String password;
 
 
     @Column(nullable = false,name = "mobile_number")
-    @NotBlank(message="Mobile number must not be blank")
     @Pattern(regexp="(^$|[0-9]{10})",message = "Mobile number must be 10 digits")
     private String mobile_number;
 
@@ -74,6 +75,7 @@ public class User extends BaseEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
 
@@ -85,20 +87,27 @@ public class User extends BaseEntity implements UserDetails {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
+    @JsonIgnore
     @Override
     public String getUsername() {
         return email;
     }
+
+    @JsonIgnore
 
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    @JsonIgnore
+
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
+
+    @JsonIgnore
 
     @Override
     public boolean isCredentialsNonExpired() {
