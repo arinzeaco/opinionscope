@@ -1,7 +1,7 @@
 package com.auth.opinionscope;
 
 import com.auth.opinionscope.model.*;
-import com.auth.opinionscope.repository.OptionsListRepository;
+import com.auth.opinionscope.repository.OptionsRepository;
 import com.auth.opinionscope.repository.QuestionRepository;
 import com.auth.opinionscope.service.CountryService;
 import com.auth.opinionscope.service.TagsService;
@@ -14,6 +14,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -26,7 +27,7 @@ import static com.auth.opinionscope.model.Role.USERS;
 @EntityScan("com.auth.opinionscope.model")
 @SpringBootApplication
 @EnableJpaAuditing(auditorAwareRef = "auditAwareImpl")
-public class OpinionScopeApplication implements CommandLineRunner{
+public class OpinionScopeApplication implements CommandLineRunner {
     @Autowired
     UserService userService;
 
@@ -34,7 +35,7 @@ public class OpinionScopeApplication implements CommandLineRunner{
     TagsService tagsService;
 
     @Autowired
-    OptionsListRepository optionsListRepository;
+    OptionsRepository optionsRepository;
 
     @Autowired
     QuestionRepository questionRepository;
@@ -56,6 +57,38 @@ public class OpinionScopeApplication implements CommandLineRunner{
 //        addManger();
 //        addtag();
 //        loadCountriesFromFile();
+//        addQuestion();
+    }
+
+    public void addQuestion() {
+//        Questions question = new Questions();
+//        question.setQuestion("What is your favorite color?");
+//        question.setAge(18);
+//
+//        Options option1 = new Options();
+//        option1.setOptions_name("Red");
+//        option1.setVotecount(0);
+//        option1.setQuestion(question);
+//        question.getOptions().add(option1);
+//
+//        questionRepository.save(question);
+
+        Questions question = new Questions();
+        question.setQuestion("What is your favorite color?");
+        question.setAge(18);
+        question.setTags(question.getTags());
+
+        Options option1 = new Options();
+        option1.setOptions_name("Red");
+        option1.setVotecount(0);
+
+        // Save the option first to generate an ID
+        optionsRepository.save(option1);
+
+        // Add the option to the question's options property
+
+        // Save the question
+        questionRepository.save(question);
     }
 
     public void adduser() {
@@ -74,6 +107,7 @@ public class OpinionScopeApplication implements CommandLineRunner{
         user.setRole(USERS);
         userService.createUser(user);
     }
+
     public void addManger() {
         User user = new User();
         user.setEmail("admin@example.com");
@@ -90,6 +124,7 @@ public class OpinionScopeApplication implements CommandLineRunner{
         user.setRole(ADMIN);
         userService.createUser(user);
     }
+
     public void addtag() {
         Tags tags1 = new Tags();
         tags1.setTagName("FootBall");
@@ -104,6 +139,7 @@ public class OpinionScopeApplication implements CommandLineRunner{
         tagsService.saveTags(tags3);
 
     }
+
     public void loadCountriesFromFile() {
         String filePath = "/Users/mac/Desktop/Java Project/opinion-scope/countries.csv"; // Replace with the actual file path
 //        List<Country> countries = new ArrayList<>();

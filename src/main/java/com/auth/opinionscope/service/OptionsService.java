@@ -1,8 +1,11 @@
 package com.auth.opinionscope.service;
 
-import com.auth.opinionscope.repository.OptionsListRepository;
+import com.auth.opinionscope.model.Options;
+import com.auth.opinionscope.repository.OptionsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /*
 @Slf4j, is a Lombok-provided annotation that will automatically generate an SLF4J
@@ -10,18 +13,18 @@ Logger static property in the class at compilation time.
 * */
 
 @Service
-public class OptionsListService {
+public class OptionsService {
 
     @Autowired
-    private OptionsListRepository optionsListRepository;
+    private OptionsRepository optionsRepository;
 
 
-//
-//    public List<OptionsList> getOptions() {
-//
-//        List<OptionsList> savedOptions = optionsListRepository.findAll();
-//        return savedOptions;
-//    }
+
+    public List<Options> getOptions() {
+
+        List<Options> savedOptions = optionsRepository.findAll();
+        return savedOptions;
+    }
 //
 ////    public Optional<OptionsList> getOptionsListById(long id) {
 ////
@@ -35,16 +38,16 @@ public class OptionsListService {
 ////        return savedUser;
 ////    }
 //
-//    public boolean saveOptions(OptionsList optionsList) {
-//        boolean isSaved = false;
-//
-//        OptionsList savedOptions = optionsListRepository.save(optionsList);
-//        if (null != savedOptions && savedOptions.getOptionsListId() > 0)
-//        {
-//            isSaved = true;
-//        }
-//        return isSaved;
-//    }
+    public boolean saveOptions(Options options) {
+        boolean isSaved = false;
+
+        Options savedOptions = optionsRepository.save(options);
+        if (savedOptions.getOptionsListId() > 0)
+        {
+            isSaved = true;
+        }
+        return isSaved;
+    }
 
 
 

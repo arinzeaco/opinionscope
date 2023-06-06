@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
-
+@Data
 public class PostDto {
 
     private String title;
@@ -15,7 +15,7 @@ public class PostDto {
 
     private Set<String> tagContents;
 
-    private Set<String> optionContents;
+    private Set<String> options;
 
     private Set<String> countryContents;
 

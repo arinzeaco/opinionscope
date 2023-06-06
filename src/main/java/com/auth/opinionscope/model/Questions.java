@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -58,7 +57,14 @@ public class Questions extends BaseEntity{
 //            cascade = CascadeType.PERSIST,targetEntity = Options.class)
     private Set<String> options = new HashSet<>();
 
+    private Set<Long> optionsIDs = new HashSet<>();
+
+
+
+
 //    @OneToMany(fetch = FetchType.EAGER)
 //    @JoinColumn(name = "Options_list_id", referencedColumnName = "OptionsListId")
 //    private OptionsList options;
+
+
 }
