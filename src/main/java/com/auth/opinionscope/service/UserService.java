@@ -10,23 +10,23 @@ import com.auth.opinionscope.repository.TokenRepository;
 import com.auth.opinionscope.repository.UserRepository;
 //import com.auth.opinionscope.repository.VerificationTokenRepository;
 import com.auth.opinionscope.rest.JwtWithResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-/*
-@Slf4j, is a Lombok-provided annotation that will automatically generate an SLF4J
-Logger static property in the class at compilation time.
-* */
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
     @Autowired
@@ -34,7 +34,6 @@ public class UserService {
 
 //    @Autowired
 //    private VerificationTokenRepository verificationTokenRepository;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -50,33 +49,27 @@ public class UserService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-
     public boolean checkIfUserAlreadyExist(User users) {
 
         if (usersRepository.existsByEmail(users.getEmail())) {
             return true;
         }
         return false;
-
     }
 
-
     public JwtWithResponse createUser(User users) {
+        log.info("users.getPassword()");
 
         var user = User.builder()
                 .firstname(users.getFirstname())
                 .lastname(users.getLastname())
                 .mobile_number(users.getMobile_number())
+                .password(passwordEncoder.encode(users.getPassword()))
                 .email(users.getEmail())
                 .role(users.getRole())
                 .email_verified(users.getEmail_verified())
                 .mobile_number_verified(users.getMobile_number_verified())
                 .build();
-
-        String password = users.getPassword();
-        if (password != null) {
-            user.setPassword(passwordEncoder.encode(password));
-        }
 
         var savedUser = usersRepository.save(user);
         var jwtToken = jwtService.generateJwtToken(user);
@@ -104,31 +97,22 @@ public class UserService {
 //                        request.getPassword()
 //                )
 //        );
+//
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         var user = usersRepository.findByEmail(request.getEmail())
                 .orElseThrow();
         var jwtToken = jwtService.generateJwtToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         revokeAllUserTokens(user);
-//        return AuthenticationResponse.builder()
-//                .accessToken(jwtToken)
-//                .refreshToken(refreshToken)
-//                .data(user)
-//                .build();
+
         JwtWithResponse response = new JwtWithResponse();
         response.setStatusCode("200");
         response.setStatusMsg("User succesfully registered");
         response.setData(user);
         response.setAccess_token(jwtToken);
         response.setRefresh_token(refreshToken);
-//        Response response = new Response();
-//        response.setStatusCode("200");
-//        response.setStatusMsg("Message saved successfully");
-//        response.setData(user);
-//
-//        return ResponseEntity
-//                .status(HttpStatus.CREATED)
-//                .header("isMsgSaved", "true")
-//                .body(response);
         return response;
     }
 

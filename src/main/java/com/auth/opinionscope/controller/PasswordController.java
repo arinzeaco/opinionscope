@@ -4,7 +4,7 @@ import com.auth.opinionscope.dataModel.ChangePasswordModel;
 import com.auth.opinionscope.dataModel.ForgotPasswordModel;
 import com.auth.opinionscope.rest.Response;
 import com.auth.opinionscope.service.EmailVerificationService;
-import com.auth.opinionscope.service.ForgotPasswordService;
+import com.auth.opinionscope.service.PasswordService;
 import com.auth.opinionscope.service.UserService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequestMapping("api/v1/password")
 @RestController
-public class ForgotPasswordController {
+public class PasswordController {
     @Autowired
     EmailVerificationService emailVerificationService;
 
     @Autowired
-    ForgotPasswordService forgotPasswordService;
+    PasswordService passwordService;
 
     @Autowired
     UserService userService;
@@ -30,7 +30,7 @@ public class ForgotPasswordController {
     private AuthenticationManager authenticationManager;
 
 
-    @PostMapping("/send_mail")
+    @PostMapping("/send_otp")
     public Response sendMail(@RequestParam String email) {
         emailVerificationService.createVerification(email);
         Response response = new Response();
@@ -40,32 +40,41 @@ public class ForgotPasswordController {
 
         return response;
     }
-    private String generateOTP() {
-        // Logic to generate a random 6-digit OTP
-        // Implement your own logic or use a library for generating random OTPs
-        // Example:
-        int minOTPValue = 100000;
-        int maxOTPValue = 999999;
-        int otpValue = (int) (Math.random() * (maxOTPValue - minOTPValue + 1) + minOTPValue);
-        return String.valueOf(otpValue);
-    }
+
 
     @PostMapping("/forgot_password")
     public Response forgotPassword(@Valid @RequestBody ForgotPasswordModel forgotPasswordModel) {
-         if(emailVerificationService.validateOTP(forgotPasswordModel.getEmail(), forgotPasswordModel.getOpt())) {
-             forgotPasswordService.forgotPassword(forgotPasswordModel);
+//         if(emailVerificationService.validateOTP(forgotPasswordModel.getEmail(), forgotPasswordModel.getOpt())) {
+//             passwordService.forgotPassword(forgotPasswordModel);
+//        }
+//        Response response = new Response();
+//        response.setStatusCode("200");
+//        response.setStatusMsg("Email has been verified");
+//        response.setData(true);
+//        return response;
+
+        if(emailVerificationService.validateOTP(forgotPasswordModel.getEmail(), forgotPasswordModel.getOtp())) {
+            if(passwordService.forgotPassword(forgotPasswordModel)){
+                Response response = new Response();
+                response.setStatusCode("200");
+                response.setStatusMsg("Password Updated");
+                response.setData(true);
+                return response;
+            }
+
         }
         Response response = new Response();
-        response.setStatusCode("200");
-        response.setStatusMsg("Email has been verified");
-        response.setData(true);
+        response.setStatusCode("400");
+        response.setStatusMsg("OTP is not valid");
+        response.setData(false);
+
         return response;
     }
 
 
     @PostMapping("/change_password")
     public Response changePassword(@Valid @RequestBody ChangePasswordModel changePasswordModel){
-         forgotPasswordService.changePassword(changePasswordModel);
+         passwordService.changePassword(changePasswordModel);
         Response response = new Response();
         response.setStatusCode("200");
         response.setStatusMsg("Password Changed");

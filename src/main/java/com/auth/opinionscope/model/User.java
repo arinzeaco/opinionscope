@@ -2,7 +2,7 @@ package com.auth.opinionscope.model;
 
 import com.auth.opinionscope.model.token.Token;
 //import com.auth.opinionscope.model.token.VerificationToken;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -35,8 +35,9 @@ public class User extends BaseEntity implements UserDetails {
     @NotEmpty(message = "This field cannot be empty")
     private String email;
 
-    @JsonIgnore
+    @Column(name = "password")
     @Size(min=5, message="Password must be at least 5 characters long")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY, value = "password")
     private String password;
 
 
@@ -86,29 +87,25 @@ public class User extends BaseEntity implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
-
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY, value = "Username")
     @Override
     public String getUsername() {
         return email;
     }
 
-    @JsonIgnore
-
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY, value = "accountNonExpired")
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
-    @JsonIgnore
-
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY, value = "accountNonLocked")
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
-    @JsonIgnore
-
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY, value = "isCredentialsNonExpired")
     @Override
     public boolean isCredentialsNonExpired() {
         return true;

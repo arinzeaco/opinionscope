@@ -48,7 +48,11 @@ public class EmailVerificationService {
 
     public boolean validateOTP(String email, String otp) {
         EmailVerification emailVerification = emailVerificationRepository.findByEmail(email);
+        log.info(otp);
+        log.info(email);
+
         if (emailVerification != null && emailVerification.getOtp().equals(otp)) {
+
             LocalDateTime currentTime = LocalDateTime.now();
             if (currentTime.isBefore(emailVerification.getExpirationTime())) {
                 // OTP is valid and not expired

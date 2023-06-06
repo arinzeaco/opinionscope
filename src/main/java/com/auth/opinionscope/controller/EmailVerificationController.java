@@ -44,7 +44,7 @@ public class EmailVerificationController {
 
 
 
-    @PostMapping("/validate_otp")
+    @PostMapping("/validate_mail")
     public Response validateOTP(@RequestParam String email, @RequestParam String otp) {
          if(emailVerificationService.validateOTP(email, otp)) {
             if(userService.verifyEmail(email)){

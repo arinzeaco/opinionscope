@@ -7,7 +7,7 @@ public class ForgotPasswordModel {
 
     private String email;
 
-    private String opt;
+    private String otp;
 
     private String password;
 

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RequestMapping("api/v1/auth")
+//@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class RegisterController {
 
@@ -46,7 +47,7 @@ public class RegisterController {
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<Response> login(@Valid @RequestBody AuthenticationRequest request) {
+    public ResponseEntity<?> login(@Valid @RequestBody AuthenticationRequest request) {
         var token = userService.authenticate(request);
 
         Response response = new Response();

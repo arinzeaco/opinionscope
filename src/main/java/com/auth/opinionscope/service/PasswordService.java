@@ -22,7 +22,7 @@ Logger static property in the class at compilation time.
 
 @Slf4j
 @Service
-public class ForgotPasswordService {
+public class PasswordService {
 
     @Autowired
     private UserRepository usersRepository;
@@ -36,15 +36,17 @@ public class ForgotPasswordService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public ResponseEntity<User> forgotPassword(ForgotPasswordModel forgotPasswordModel) {
+
+
+    public boolean forgotPassword(ForgotPasswordModel forgotPasswordModel) {
         Optional<User> user = usersRepository.findByEmail(forgotPasswordModel.getEmail());
         if (user.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return false;
         }
-        user.get().setPassword(forgotPasswordModel.getPassword());
+        user.get().setPassword(passwordEncoder.encode(forgotPasswordModel.getPassword()));
 
-        usersRepository.save(user.get());
-        return new ResponseEntity<>(user.get(), HttpStatus.OK);
+        User savedUser = usersRepository.save(user.get());
+        return savedUser.getUserId() != null;
     }
 
     public boolean changePassword(ChangePasswordModel changePasswordModel) {
