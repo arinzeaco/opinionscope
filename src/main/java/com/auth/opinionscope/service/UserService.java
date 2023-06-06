@@ -13,6 +13,7 @@ import com.auth.opinionscope.rest.JwtWithResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -90,7 +91,7 @@ public class UserService {
         return response;
     }
 
-    public JwtWithResponse authenticate(AuthenticationRequest request) {
+    public ResponseEntity<?>  authenticate(AuthenticationRequest request) {
 //        authenticationManager.authenticate(
 //                new UsernamePasswordAuthenticationToken(
 //                        request.getEmail(),
@@ -113,7 +114,9 @@ public class UserService {
         response.setData(user);
         response.setAccess_token(jwtToken);
         response.setRefresh_token(refreshToken);
-        return response;
+
+        return ResponseEntity.ok(response);
+
     }
 
     public String generateToken() {

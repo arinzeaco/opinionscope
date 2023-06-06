@@ -25,14 +25,22 @@ public class EmailVerificationService {
     }
 
     public void createVerification(String email) {
-        String otp= generateOTP();
-        EmailVerification emailVerification = new EmailVerification();
-        emailVerification.setEmail(email);
-        emailVerification.setOtp(otp);
-        emailVerification.setExpirationTime(LocalDateTime.now().plusMinutes(10));
-        log.info("PPPPPPPP The pass"+ otp);
 
-        emailVerificationRepository.save(emailVerification);
+        EmailVerification emailVerification = emailVerificationRepository.findByEmail(email);
+
+        if (emailVerification == null) {
+            String otp = generateOTP();
+            emailVerification = new EmailVerification();
+            emailVerification.setEmail(email);
+            emailVerification.setOtp(otp);
+            emailVerification.setExpirationTime(LocalDateTime.now().plusMinutes(10));
+            emailVerificationRepository.save(emailVerification);
+
+        } else {
+            emailVerification.setOtp(generateOTP());
+            emailVerification.setExpirationTime(LocalDateTime.now().plusMinutes(10));
+            emailVerificationRepository.save(emailVerification);
+        }
 //        sendMail(email,otp);
         // Send the email with the OTP to the user's email address
     }

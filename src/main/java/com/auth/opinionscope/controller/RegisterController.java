@@ -31,38 +31,31 @@ public class RegisterController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping(value = "/createUser")
-    public JwtWithResponse createUser(@Valid @RequestBody User user) {
+    public ResponseEntity<?>  createUser(@Valid @RequestBody User user) {
 
         var checkIfUserAlreadyExist = userService.checkIfUserAlreadyExist(user);
         if (checkIfUserAlreadyExist) {
-            JwtWithResponse response = new JwtWithResponse();
+            Response response = new Response();
             response.setStatusCode("400");
             response.setStatusMsg("User Already exist");
-            return response;
+            return ResponseEntity.ok(response);
         }
         var createUser = userService.createUser(user);
-
-
-        return createUser;
+        Response response = new Response();
+        response.setStatusCode("400");
+        response.setStatusMsg("User Already exist");
+        return ResponseEntity.ok(createUser);
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<?> login(@Valid @RequestBody AuthenticationRequest request) {
-        var token = userService.authenticate(request);
+    public ResponseEntity<?>  login(@Valid @RequestBody AuthenticationRequest request) {
+        var authenticate = userService.authenticate(request);
 
-        Response response = new Response();
-        response.setStatusCode("200");
-        response.setStatusMsg("Message saved successfully");
-        response.setData(token);
-
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .header("isMsgSaved", "true")
-                .body(response);
+        return authenticate;
     }
 
     @PostMapping(value = "/validateEmail")
-    public ResponseEntity<Response> validateEmail(@Valid @RequestBody AuthenticationRequest request) {
+    public ResponseEntity<?> validateEmail(@Valid @RequestBody AuthenticationRequest request) {
 
         var token = userService.authenticate(request);
 
