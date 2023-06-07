@@ -1,5 +1,7 @@
 package com.auth.opinionscope.service;
 
+import com.auth.opinionscope.dataModel.OptionDetails;
+import com.auth.opinionscope.dataModel.QuestionsModel;
 import com.auth.opinionscope.model.Options;
 import com.auth.opinionscope.model.Questions;
 import com.auth.opinionscope.repository.OptionsRepository;
@@ -7,11 +9,9 @@ import com.auth.opinionscope.repository.QuestionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 
 @Slf4j
@@ -30,15 +30,45 @@ public class QuestionService {
     @Autowired
     private OptionsRepository optionsRepository;
 
-    public List<Questions> getAllQuestions() {
-//        op.setUserVoted(voteService.getUserIdAndOptionsListId(userId,OptionsListId));
+    public List<QuestionsModel> getAllQuestions(@RequestParam("userId") Long userId,
+                                                @RequestParam("optionsListId") Long optionsListId) {
 
-        List<Questions> savedUser = questionsRepository.findAll();
-//        for (String op : savedUser.get(0).getOptions()) {
-//            long count = voteService.getUserIdAndOptionsListId(savedUser.get(0).getQuestionId());
-//            op.setVotecount((int) count);
-//        }
-        return savedUser;
+        List<Questions> quest = questionsRepository.findAll();
+
+        List<QuestionsModel> questionsModels = new ArrayList<>();
+
+        for (Questions question : quest) {
+
+            QuestionsModel questionsModel = new QuestionsModel();
+
+            questionsModel.setQuestionId(question.getQuestionId());
+            questionsModel.setQuestion(question.getQuestion());
+            questionsModel.setAge(question.getAge());
+            questionsModel.setTags(question.getTags());
+
+            questionsModel.setCountry(question.getCountry());
+
+            // Get the options for the question
+            // Get the country for the question
+
+            Set<OptionDetails> options = new HashSet<>();
+            for (Long optionId : question.getOptionsIDs()) {
+                OptionDetails optionDetails = new OptionDetails();
+                Options ee = optionsRepository.findByOptionsListId(optionId);
+//                ee.setOptions_name();
+                optionDetails.setOptionsListId(ee.getOptionsListId());
+                optionDetails.setOptions_name(ee.getOptions_name());
+                optionDetails.setVotecount(ee.getOptions_count());
+                optionDetails.setUserVoted(voteService.getUserIdAndOptionsListId(userId,optionsListId));
+
+
+                options.add(optionDetails);
+            }
+            questionsModel.setOptions(options);
+
+            questionsModels.add(questionsModel);
+        }
+       return questionsModels;
     }
 
     public boolean addQuestions(Questions postDTO) {
@@ -54,8 +84,8 @@ public class QuestionService {
         for (String option : postDTO.getOptions()) {
             Options opt = new Options();
             opt.setOptions_name(option);
-            opt.setVotecount(0);
-            opt.setUserVoted(false);
+            opt.setOptions_count(0);
+//            opt.setUserVoted(false);
             options.add(opt);
 
             Options savedOptions = optionsRepository.save(opt);

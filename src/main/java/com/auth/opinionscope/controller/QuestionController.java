@@ -1,6 +1,7 @@
 package com.auth.opinionscope.controller;
 
 import com.auth.opinionscope.dataModel.PostDto;
+import com.auth.opinionscope.dataModel.request.AllQuestionRequest;
 import com.auth.opinionscope.model.Options;
 import com.auth.opinionscope.model.Questions;
 import com.auth.opinionscope.rest.Response;
@@ -27,11 +28,12 @@ public class QuestionController {
     @Autowired
     OptionsService optionsService;
 
-//    @GetMapping(value = "/all_question/{userId}/{optionsListId}")
-    @GetMapping(value = "/all_question")
-    @ResponseBody
-    public ResponseEntity<Response> getQuestions() {
-        var questions = questionsService.getAllQuestions();
+    //    @GetMapping(value = "/all_question/{userId}/{optionsListId}")
+    @PostMapping("/all_question")
+    public ResponseEntity<Response> getQuestions(@RequestBody AllQuestionRequest allQuestionRequest) {
+        var questions =
+                questionsService.getAllQuestions(allQuestionRequest.getUserId(),
+                        allQuestionRequest.getOptionsListId());
         Response response = new Response();
         response.setStatusCode("200");
         response.setStatusMsg("Questions gotten successfully");

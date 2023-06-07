@@ -28,17 +28,15 @@ public class VoteService {
 
         return savedVote;
     }
-    public boolean getUserIdAndOptionsListId(long userId, long OptionsListId) {
-//        boolean isVoted = voteRepository.findFirstByUserId(userId);
+    public boolean getUserIdAndOptionsListId(Long userId, Long OptionsListId) {
         Optional<VoteCount> optional = voteRepository.findByUserIdAndOptionsListId(userId,OptionsListId);
 
-//        Optional< VoteCount > optional = voteRepository.findById(id2);
-//
-//        if (optional.isPresent()) {
-//            System.out.println(optional.get());
-//        } else {
-//            System.out.printf("No employee found with id %d%n", id2);
-//        }
+
+        if (optional.isPresent()) {
+            System.out.println(optional.get());
+        } else {
+            System.out.printf("No employee found with id %d%n", userId);
+        }
         return optional.isPresent();
     }
 //    public List<VoteCount> getVotes(long userId) {

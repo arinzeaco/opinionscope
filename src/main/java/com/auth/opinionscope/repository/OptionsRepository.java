@@ -7,6 +7,6 @@ import java.util.Optional;
 
 public interface OptionsRepository extends JpaRepository<Options, Integer> {
 //    Optional<Options> findById(long id);
-//   OptionsList getAllByOptionsId(long id);
+   Options findByOptionsListId(long id);
 
 }

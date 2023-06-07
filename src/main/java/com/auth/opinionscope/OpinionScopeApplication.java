@@ -53,7 +53,7 @@ public class OpinionScopeApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-//        adduser();
+        adduser();
 //        addManger();
 //        addtag();
 //        loadCountriesFromFile();
@@ -80,7 +80,7 @@ public class OpinionScopeApplication implements CommandLineRunner {
 
         Options option1 = new Options();
         option1.setOptions_name("Red");
-        option1.setVotecount(0);
+        option1.setOptions_count(0);
 
         // Save the option first to generate an ID
         optionsRepository.save(option1);

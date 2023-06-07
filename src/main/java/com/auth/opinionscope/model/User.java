@@ -10,7 +10,6 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.sql.Date;
 import java.util.Collection;
 import java.util.List;
@@ -61,7 +60,6 @@ public class User extends BaseEntity implements UserDetails {
     @Column()
     private Date dateOfBirth;
 
-    @Column(nullable = true)
     private String googleAuthId;
 
     @Column()
@@ -80,8 +78,16 @@ public class User extends BaseEntity implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
 
+//    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST, targetEntity = UserDetails.class)
+//    @JoinColumn(name = "usersDetails_id", referencedColumnName = "usersDetailsId",nullable = false)
+//    @OneToOne(mappedBy = "user")
+//    private UsersDetails usersDetails;
 
-//    @OneToMany(mappedBy = "user")
+    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL, targetEntity = UsersDetails.class)
+    @JoinColumn(name = "usersDetails_id", referencedColumnName = "usersDetailsId",nullable = true)
+    private UsersDetails usersDetails;
+
+    //    @OneToMany(mappedBy = "user")
 //    private List<VerificationToken> verificationToken;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

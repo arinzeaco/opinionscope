@@ -26,17 +26,17 @@ public class OptionsService {
         return savedOptions;
     }
 //
-////    public Optional<OptionsList> getOptionsListById(long id) {
-////
-////        Optional<OptionsList> savedOptions = optionsListRepository.findById(id);
-////        return savedOptions;
-////    }
-////    public OptionsList getOptionsListById() {
-////        int intValue = 10;
-////        long longValue1 = intValue; //
-////        OptionsList savedUser = optionsListRepository.getAllByOptionsId(longValue1);
-////        return savedUser;
-////    }
+//    public Optional<OptionsList> getOptionsListById(long id) {
+//
+//        Optional<OptionsList> savedOptions = optionsListRepository.findById(id);
+//        return savedOptions;
+//    }
+//    public OptionsList getOptionsListById() {
+//        int intValue = 10;
+//        long longValue1 = intValue; //
+//        OptionsList savedUser = optionsListRepository.getAllByOptionsId(longValue1);
+//        return savedUser;
+//    }
 //
     public boolean saveOptions(Options options) {
         boolean isSaved = false;
