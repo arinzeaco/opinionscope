@@ -1,7 +1,7 @@
 package com.auth.opinionscope.controller;
 
-import com.auth.opinionscope.dataModel.ChangePasswordModel;
-import com.auth.opinionscope.dataModel.ForgotPasswordModel;
+import com.auth.opinionscope.dataModel.request.ChangePasswordModel;
+import com.auth.opinionscope.dataModel.request.ForgotPasswordModel;
 import com.auth.opinionscope.rest.Response;
 import com.auth.opinionscope.service.EmailVerificationService;
 import com.auth.opinionscope.service.PasswordService;

@@ -1,6 +1,6 @@
 //package com.auth.opinionscope.service;
 //
-//import com.auth.opinionscope.model.User;
+//import com.auth.opinionscope.model.auth.User;
 ////import com.auth.opinionscope.model.token.VerificationToken;
 ////import com.auth.opinionscope.repository.VerificationTokenRepository;
 //import jakarta.validation.Valid;

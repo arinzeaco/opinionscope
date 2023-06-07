@@ -1,5 +1,5 @@
 
-package com.auth.opinionscope.model;
+package com.auth.opinionscope.model.auth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

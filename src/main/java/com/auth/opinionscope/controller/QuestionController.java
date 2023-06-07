@@ -1,6 +1,5 @@
 package com.auth.opinionscope.controller;
 
-import com.auth.opinionscope.dataModel.PostDto;
 import com.auth.opinionscope.dataModel.request.AllQuestionRequest;
 import com.auth.opinionscope.model.Options;
 import com.auth.opinionscope.model.Questions;

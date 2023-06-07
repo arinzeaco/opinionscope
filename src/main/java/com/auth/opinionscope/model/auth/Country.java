@@ -1,5 +1,4 @@
-package com.auth.opinionscope.model;
-
+package com.auth.opinionscope.model.auth;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -8,19 +7,16 @@ import org.hibernate.annotations.GenericGenerator;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
 @Data
-public class UsersDetails extends BaseEntity{
+@Entity
+public class Country {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO,generator="native")
     @GenericGenerator(name = "native",strategy = "native")
-    private Long UsersDetailsId;
+    private Long countryId;
 
 
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id")
+    private String country_name;
 
-
-    private Set<String> answeredQuests = new HashSet<>();
 }

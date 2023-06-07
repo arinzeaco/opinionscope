@@ -1,9 +1,7 @@
 package com.auth.opinionscope.service;
 
-import com.auth.opinionscope.model.Country;
-import com.auth.opinionscope.model.Tags;
+import com.auth.opinionscope.model.auth.Country;
 import com.auth.opinionscope.repository.CountryRepository;
-import com.auth.opinionscope.repository.TagsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

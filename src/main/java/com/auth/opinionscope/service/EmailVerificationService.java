@@ -1,9 +1,7 @@
 package com.auth.opinionscope.service;
 
-import com.auth.opinionscope.model.EmailVerification;
-import com.auth.opinionscope.model.User;
+import com.auth.opinionscope.model.auth.EmailVerification;
 import com.auth.opinionscope.repository.EmailVerificationRepository;
-import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;

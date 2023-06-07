@@ -2,7 +2,7 @@ package com.auth.opinionscope.service;
 
 import com.auth.opinionscope.config.AuthenticationRequest;
 import com.auth.opinionscope.config.JwtService;
-import com.auth.opinionscope.model.User;
+import com.auth.opinionscope.model.auth.User;
 import com.auth.opinionscope.model.token.Token;
 import com.auth.opinionscope.model.token.TokenType;
 //import com.auth.opinionscope.model.token.VerificationToken;

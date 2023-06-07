@@ -1,8 +1,7 @@
 package com.auth.opinionscope.controller;
 
 import com.auth.opinionscope.config.AuthenticationRequest;
-import com.auth.opinionscope.model.User;
-import com.auth.opinionscope.rest.JwtWithResponse;
+import com.auth.opinionscope.model.auth.User;
 import com.auth.opinionscope.rest.Response;
 import com.auth.opinionscope.service.EmailVerificationService;
 import com.auth.opinionscope.service.UserService;
@@ -19,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/v1/auth")
 //@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-public class RegisterController {
+public class UserController {
 
     @Autowired
     UserService userService;

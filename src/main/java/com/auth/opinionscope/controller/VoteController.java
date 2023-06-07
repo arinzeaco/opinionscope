@@ -37,7 +37,6 @@ public class VoteController {
     }
     @GetMapping(value = "/get_vote")
     public ResponseEntity<Response> getVote() {
-        log.info("TTTTTTTsss: One");
 
 //        var data = voteService.getVotes();
         Response response = new Response();

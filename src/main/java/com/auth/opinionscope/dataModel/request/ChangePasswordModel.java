@@ -1,4 +1,4 @@
-package com.auth.opinionscope.dataModel;
+package com.auth.opinionscope.dataModel.request;
 
 import lombok.Data;
 import org.springframework.web.bind.annotation.RequestParam;

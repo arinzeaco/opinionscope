@@ -1,6 +1,6 @@
 //package com.auth.opinionscope.repository;
 //
-//import com.auth.opinionscope.model.User;
+//import com.auth.opinionscope.model.auth.User;
 //import com.auth.opinionscope.model.token.VerificationToken;
 //import org.springframework.data.jpa.repository.JpaRepository;
 //

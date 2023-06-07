@@ -1,4 +1,4 @@
-package com.auth.opinionscope.model;
+package com.auth.opinionscope.model.auth;
 
 
 import jakarta.persistence.*;

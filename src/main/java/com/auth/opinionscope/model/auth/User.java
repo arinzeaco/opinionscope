@@ -1,5 +1,7 @@
-package com.auth.opinionscope.model;
+package com.auth.opinionscope.model.auth;
 
+import com.auth.opinionscope.model.BaseEntity;
+import com.auth.opinionscope.model.Role;
 import com.auth.opinionscope.model.token.Token;
 //import com.auth.opinionscope.model.token.VerificationToken;
 import com.fasterxml.jackson.annotation.*;

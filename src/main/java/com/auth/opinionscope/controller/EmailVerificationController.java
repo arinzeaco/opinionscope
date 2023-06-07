@@ -1,12 +1,10 @@
 package com.auth.opinionscope.controller;
 
-import com.auth.opinionscope.model.User;
 import com.auth.opinionscope.rest.Response;
 import com.auth.opinionscope.service.EmailVerificationService;
 import com.auth.opinionscope.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 

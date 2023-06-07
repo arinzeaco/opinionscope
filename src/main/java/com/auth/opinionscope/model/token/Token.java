@@ -1,6 +1,6 @@
 package com.auth.opinionscope.model.token;
 
-import com.auth.opinionscope.model.User;
+import com.auth.opinionscope.model.auth.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

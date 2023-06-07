@@ -1,6 +1,8 @@
 package com.auth.opinionscope;
 
 import com.auth.opinionscope.model.*;
+import com.auth.opinionscope.model.auth.Country;
+import com.auth.opinionscope.model.auth.User;
 import com.auth.opinionscope.repository.OptionsRepository;
 import com.auth.opinionscope.repository.QuestionRepository;
 import com.auth.opinionscope.service.CountryService;

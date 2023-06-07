@@ -59,7 +59,7 @@ public class QuestionService {
                 optionDetails.setOptionsListId(ee.getOptionsListId());
                 optionDetails.setOptions_name(ee.getOptions_name());
                 optionDetails.setVotecount(ee.getOptions_count());
-                optionDetails.setUserVoted(voteService.getUserIdAndOptionsListId(userId,optionsListId));
+                optionDetails.setUserVoted(voteService.getUserIdAndOptionsListId(userId,ee.getOptionsListId()));
 
 
                 options.add(optionDetails);
