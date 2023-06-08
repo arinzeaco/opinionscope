@@ -58,25 +58,34 @@ public class VoteService {
 
     public boolean saveVote(VoteCount voteCount) {
         boolean isSaved = false;
-        Optional<VoteCount> findByUserIdAndOptionsListId = voteRepository.findByUserIdAndQuestionIdAndOptionsId
-                (voteCount.getUserId(), voteCount.getQuestionId(),voteCount.getOptionsId());
+        Optional<VoteCount> findByUserIdAndQuestionId = voteRepository.findByUserIdAndQuestionId(
+                voteCount.getUserId(), voteCount.getQuestionId()
+        );
 
-        if(findByUserIdAndOptionsListId.isPresent()){
-            findByUserIdAndOptionsListId.get().
-                    setOptionsId(voteCount.getOptionsId());
-            VoteCount saveVote = voteRepository.
-                    save(findByUserIdAndOptionsListId.get());
-            return saveVote.getUserId() != null;
-        } else {
-            Options findByOptionsListId = optionsRepository.findByOptionsId(voteCount.getOptionsId());
-            findByOptionsListId.setOptions_count(findByOptionsListId.getOptions_count()+1);
-            optionsRepository.save(findByOptionsListId);
-            VoteCount saveVote = voteRepository.save(voteCount);
-//            optionsRepository.
-            if (saveVote.getId() > 0) {
-                isSaved = true;
+        if (findByUserIdAndQuestionId.isPresent()) {
+            VoteCount existingVote = findByUserIdAndQuestionId.get();
+            Options previousOption = optionsRepository.findByOptionsId(existingVote.getOptionsId());
+            Options newOption = optionsRepository.findByOptionsId(voteCount.getOptionsId());
+
+            if (previousOption.getOptionsId() != newOption.getOptionsId()) {
+                previousOption.setOptions_count(previousOption.getOptions_count() - 1);
+                optionsRepository.save(previousOption);
+                newOption.setOptions_count(newOption.getOptions_count() + 1);
+                optionsRepository.save(newOption);
             }
+
+            existingVote.setOptionsId(voteCount.getOptionsId());
+            VoteCount savedVote = voteRepository.save(existingVote);
+
+            return savedVote.getUserId() != null;
+        } else {
+            Options newOption = optionsRepository.findByOptionsId(voteCount.getOptionsId());
+            newOption.setOptions_count(newOption.getOptions_count() + 1);
+            optionsRepository.save(newOption);
+
+            VoteCount savedVote = voteRepository.save(voteCount);
+
+            return savedVote.getId() > 0;
         }
-        return isSaved;
     }
 }
