@@ -14,8 +14,10 @@ public class VoteCount {
     @GenericGenerator(name = "native",strategy = "native")
     private Long id;
 
-    private Long optionsListId;
+    private Long optionsId;
 
     private Long userId;
+
+    private Long questionId;
 
 }

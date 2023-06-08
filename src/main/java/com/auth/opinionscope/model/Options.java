@@ -9,10 +9,12 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 public class Options {
 
+
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO,generator="native")
     @GenericGenerator(name = "native",strategy = "native")
-    private Long optionsListId;
+    @Column(name = "options_id")
+    private long optionsId;
 
     private String options_name;
 

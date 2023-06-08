@@ -52,7 +52,6 @@ public class PasswordController {
                 response.setStatusCode("200");
                 response.setStatusMsg("Password Updated");
                 response.setData(true);
-//                return response;
                 return ResponseEntity.ok(response);
 
             }

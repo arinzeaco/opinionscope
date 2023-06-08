@@ -31,8 +31,7 @@ public class QuestionController {
     @PostMapping("/all_question")
     public ResponseEntity<Response> getQuestions(@RequestBody AllQuestionRequest allQuestionRequest) {
         var questions =
-                questionsService.getAllQuestions(allQuestionRequest.getUserId(),
-                        allQuestionRequest.getOptionsListId());
+                questionsService.getAllQuestions(allQuestionRequest.getUserId());
         Response response = new Response();
         response.setStatusCode("200");
         response.setStatusMsg("Questions gotten successfully");

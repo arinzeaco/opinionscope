@@ -1,6 +1,10 @@
 package com.auth.opinionscope.service;
 
+import com.auth.opinionscope.dataModel.request.ForgotPasswordModel;
+import com.auth.opinionscope.model.Options;
 import com.auth.opinionscope.model.VoteCount;
+import com.auth.opinionscope.model.auth.User;
+import com.auth.opinionscope.repository.OptionsRepository;
 import com.auth.opinionscope.repository.VoteRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,16 +24,21 @@ public class VoteService {
     @Autowired
     private VoteRepository voteRepository;
 
+    @Autowired
+    private OptionsRepository optionsRepository;
+
+
 
 
     public long getVoteById(long id) {
 
-        long savedVote = voteRepository.countByOptionsListId(id);
+        long savedVote = voteRepository.countByOptionsId(id);
 
         return savedVote;
     }
-    public boolean getUserIdAndOptionsListId(Long userId, Long OptionsListId) {
-        Optional<VoteCount> optional = voteRepository.findByUserIdAndOptionsListId(userId,OptionsListId);
+
+    public boolean getUserIdAndQuestionIdAndOptionsId(Long userId, Long question, Long OptionsListId ) {
+        Optional<VoteCount> optional = voteRepository.findByUserIdAndQuestionIdAndOptionsId(userId,question, OptionsListId);
 
 
         if (optional.isPresent()) {
@@ -47,19 +56,27 @@ public class VoteService {
 //    }
 
 
-
     public boolean saveVote(VoteCount voteCount) {
         boolean isSaved = false;
+        Optional<VoteCount> findByUserIdAndOptionsListId = voteRepository.findByUserIdAndQuestionIdAndOptionsId
+                (voteCount.getUserId(), voteCount.getQuestionId(),voteCount.getOptionsId());
 
-        VoteCount saveVote= voteRepository.save(voteCount);
-        if (null != saveVote && saveVote.getId() > 0)
-        {
-            isSaved = true;
+        if(findByUserIdAndOptionsListId.isPresent()){
+            findByUserIdAndOptionsListId.get().
+                    setOptionsId(voteCount.getOptionsId());
+            VoteCount saveVote = voteRepository.
+                    save(findByUserIdAndOptionsListId.get());
+            return saveVote.getUserId() != null;
+        } else {
+            Options findByOptionsListId = optionsRepository.findByOptionsId(voteCount.getOptionsId());
+            findByOptionsListId.setOptions_count(findByOptionsListId.getOptions_count()+1);
+            optionsRepository.save(findByOptionsListId);
+            VoteCount saveVote = voteRepository.save(voteCount);
+//            optionsRepository.
+            if (saveVote.getId() > 0) {
+                isSaved = true;
+            }
         }
-
         return isSaved;
     }
-
-
-
 }

@@ -18,6 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import static com.auth.opinionscope.config.Permission.*;
 import static com.auth.opinionscope.model.Role.ADMIN;
@@ -40,41 +41,62 @@ public class ProjectSecurityConfig {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf()
-                .disable()
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
+                )
+                .headers(headers -> headers.frameOptions().disable())
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**"))
+                        .ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/auth/**"))
+                        .ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/questions/**"))
+                        .ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/votes/**"))
+                )
                 .authorizeHttpRequests()
-                .requestMatchers("api/v1/auth/*","api/v1/otp/*","api/v1/password/*",
-                        "api/v1/questions/*","api/v1/votes/*")
+                .requestMatchers("/api/v1/auth/*","/api/v1/otp/*","/api/v1/questions/*",
+                        "/api/v1/votes/*")
                 .permitAll()
                 .requestMatchers("/api/v1/test/**").hasAnyRole(ADMIN.name(), MANAGER.name())
-
-//                .requestMatchers("api/v1/questions/*").hasAnyRole(USERS.name(), ADMIN.name())
-//                .requestMatchers("api/v1/test/**").authenticated()
-////                .requestMatchers(HttpMethod.POST, "/api/v1/questions/*").hasAnyRole( ADMIN.name())
+                .anyRequest().authenticated();
+//        http
+//                .authorizeHttpRequests(requests -> requests
+//                        .requestMatchers("/h2-console/**","api/v1/auth/*").permitAll()
+//                );
+//        http
+//                .csrf()
+//                .disable()
+//                .authorizeHttpRequests()
+//                .requestMatchers("api/v1/auth/*","api/v1/otp/*","api/v1/password/*",
+//                        "api/v1/questions/*","api/v1/votes/*")
+//                .permitAll()
+//                .requestMatchers("/api/v1/test/**").hasAnyRole(ADMIN.name(), MANAGER.name())
 //
-//                .requestMatchers(HttpMethod.GET, "/api/v1/tags/**").hasAnyAuthority(USERS.name(),ADMIN.name())
-//                .requestMatchers(HttpMethod.POST, "/api/v1/tags/**").hasAuthority( ADMIN.name())
+////                .requestMatchers("api/v1/questions/*").hasAnyRole(USERS.name(), ADMIN.name())
+////                .requestMatchers("api/v1/test/**").authenticated()
+//////                .requestMatchers(HttpMethod.POST, "/api/v1/questions/*").hasAnyRole( ADMIN.name())
+////
+////                .requestMatchers(HttpMethod.GET, "/api/v1/tags/**").hasAnyAuthority(USERS.name(),ADMIN.name())
+////                .requestMatchers(HttpMethod.POST, "/api/v1/tags/**").hasAuthority( ADMIN.name())
+////
+////                .requestMatchers(HttpMethod.GET, "/api/v1/Options/**").hasAnyAuthority(USERS.name(),ADMIN.name())
+////                .requestMatchers(HttpMethod.POST, "/api/v1/Options/**").hasAuthority( ADMIN.name())
+////
+////                .requestMatchers(HttpMethod.GET, "/api/v1/votes/**").hasAnyAuthority(USERS.name(),ADMIN.name())
+////                .requestMatchers(HttpMethod.POST, "/api/v1/votes/**").hasAuthority(ADMIN.name())
+//                //                .requestMatchers("api/v1/questions/*").hasAuthority(USERS.name())
+////                .requestMatchers("api/v1/questions/*").hasAuthority(ADMIN.name(), MANAGER.name(),USERS.name())
 //
-//                .requestMatchers(HttpMethod.GET, "/api/v1/Options/**").hasAnyAuthority(USERS.name(),ADMIN.name())
-//                .requestMatchers(HttpMethod.POST, "/api/v1/Options/**").hasAuthority( ADMIN.name())
-//
-//                .requestMatchers(HttpMethod.GET, "/api/v1/votes/**").hasAnyAuthority(USERS.name(),ADMIN.name())
-//                .requestMatchers(HttpMethod.POST, "/api/v1/votes/**").hasAuthority(ADMIN.name())
-                //                .requestMatchers("api/v1/questions/*").hasAuthority(USERS.name())
-//                .requestMatchers("api/v1/questions/*").hasAuthority(ADMIN.name(), MANAGER.name(),USERS.name())
-
-//                .requestMatchers(GET, "/api/v1/admin/**").hasAuthority(ADMIN_READ.name())
-//                .requestMatchers(POST, "/api/v1/admin/**").hasAuthority(ADMIN_CREATE.name())
-//                .requestMatchers(PUT, "/api/v1/admin/**").hasAuthority(ADMIN_UPDATE.name())
-//                .requestMatchers(DELETE, "/api/v1/admin/**").hasAuthority(ADMIN_DELETE.name())
-                .anyRequest()
-                .authenticated()
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+////                .requestMatchers(GET, "/api/v1/admin/**").hasAuthority(ADMIN_READ.name())
+////                .requestMatchers(POST, "/api/v1/admin/**").hasAuthority(ADMIN_CREATE.name())
+////                .requestMatchers(PUT, "/api/v1/admin/**").hasAuthority(ADMIN_UPDATE.name())
+////                .requestMatchers(DELETE, "/api/v1/admin/**").hasAuthority(ADMIN_DELETE.name())
+//                .anyRequest()
+//                .authenticated()
+//                .and()
+//                .sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
+//                .authenticationProvider(authenticationProvider)
+//                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 //                .logout()
 //                .logoutUrl("/api/v1/auth/logout")
 //                .addLogoutHandler(logoutHandler)

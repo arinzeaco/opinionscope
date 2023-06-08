@@ -30,8 +30,7 @@ public class QuestionService {
     @Autowired
     private OptionsRepository optionsRepository;
 
-    public List<QuestionsModel> getAllQuestions(@RequestParam("userId") Long userId,
-                                                @RequestParam("optionsListId") Long optionsListId) {
+    public List<QuestionsModel> getAllQuestions(@RequestParam("userId") Long userId) {
 
         List<Questions> quest = questionsRepository.findAll();
 
@@ -54,12 +53,13 @@ public class QuestionService {
             Set<OptionDetails> options = new HashSet<>();
             for (Long optionId : question.getOptionsIDs()) {
                 OptionDetails optionDetails = new OptionDetails();
-                Options ee = optionsRepository.findByOptionsListId(optionId);
+                Options findByOptionsListId = optionsRepository.findByOptionsId(optionId);
 //                ee.setOptions_name();
-                optionDetails.setOptionsListId(ee.getOptionsListId());
-                optionDetails.setOptions_name(ee.getOptions_name());
-                optionDetails.setVotecount(ee.getOptions_count());
-                optionDetails.setUserVoted(voteService.getUserIdAndOptionsListId(userId,ee.getOptionsListId()));
+                optionDetails.setOptionsListId(findByOptionsListId.getOptionsId());
+                optionDetails.setOptions_name(findByOptionsListId.getOptions_name());
+                optionDetails.setVotecount(findByOptionsListId.getOptions_count());
+                optionDetails.setUserVoted(voteService.getUserIdAndQuestionIdAndOptionsId(userId,question.getQuestionId(),
+                        findByOptionsListId.getOptionsId()    ));
 
 
                 options.add(optionDetails);
@@ -89,8 +89,8 @@ public class QuestionService {
             options.add(opt);
 
             Options savedOptions = optionsRepository.save(opt);
-            if (savedOptions.getOptionsListId() > 0) {
-                optionsID.add(savedOptions.getOptionsListId());
+            if (savedOptions.getOptionsId() > 0) {
+                optionsID.add(savedOptions.getOptionsId());
             }
 
         }
@@ -106,13 +106,13 @@ public class QuestionService {
         return isSaved;
     }
 
-    public boolean saveOptions(Options options) {
-        boolean isSaved = false;
-
-        Options savedOptions = optionsRepository.save(options);
-        if (savedOptions.getOptionsListId() > 0) {
-            isSaved = true;
-        }
-        return isSaved;
-    }
+//    public boolean saveOptions(Options options) {
+//        boolean isSaved = false;
+//
+//        Options savedOptions = optionsRepository.save(options);
+//        if (savedOptions.getOptionsId() > 0) {
+//            isSaved = true;
+//        }
+//        return isSaved;
+//    }
 }

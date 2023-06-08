@@ -42,7 +42,7 @@ public class OptionsService {
         boolean isSaved = false;
 
         Options savedOptions = optionsRepository.save(options);
-        if (savedOptions.getOptionsListId() > 0)
+        if (savedOptions.getOptionsId() > 0)
         {
             isSaved = true;
         }
