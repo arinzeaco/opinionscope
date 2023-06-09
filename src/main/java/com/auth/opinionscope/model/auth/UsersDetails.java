@@ -2,6 +2,7 @@ package com.auth.opinionscope.model.auth;
 
 
 import com.auth.opinionscope.model.BaseEntity;
+import com.auth.opinionscope.model.Questions;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
@@ -21,7 +22,9 @@ public class UsersDetails extends BaseEntity {
 
 //    @OneToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "user_id")
-
-
     private Set<String> answeredQuests = new HashSet<>();
+
+    private String profileImageUrl;
+
+
 }

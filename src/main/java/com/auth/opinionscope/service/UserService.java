@@ -3,6 +3,7 @@ package com.auth.opinionscope.service;
 import com.auth.opinionscope.config.AuthenticationRequest;
 import com.auth.opinionscope.config.JwtService;
 import com.auth.opinionscope.model.auth.User;
+import com.auth.opinionscope.model.auth.UsersDetails;
 import com.auth.opinionscope.model.token.Token;
 import com.auth.opinionscope.model.token.TokenType;
 //import com.auth.opinionscope.model.token.VerificationToken;
@@ -22,7 +23,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 
 @Slf4j
@@ -60,7 +60,8 @@ public class UserService {
 
     public JwtWithResponse createUser(User users) {
         log.info("users.getPassword()");
-
+        UsersDetails usersDetailsData = new UsersDetails(); // Initialize the usersDetails field with default values
+        usersDetailsData.setProfileImageUrl("");
         var user = User.builder()
                 .firstname(users.getFirstname())
                 .lastname(users.getLastname())
@@ -70,6 +71,7 @@ public class UserService {
                 .role(users.getRole())
                 .email_verified(users.getEmail_verified())
                 .mobile_number_verified(users.getMobile_number_verified())
+                .usersDetails(usersDetailsData)
                 .build();
 
         var savedUser = usersRepository.save(user);
@@ -119,12 +121,11 @@ public class UserService {
 
     }
 
-    public String generateToken() {
-        Random random = new Random();
-        int min = 100000; // Minimum 6-digit number
-        int max = 999999; // Maximum 6-digit number
-        int randomNumber = random.nextInt(max - min + 1) + min;
-        return String.valueOf(randomNumber);
+    public User findByUserId(long userId) {
+        var user = usersRepository.findByUserId(userId)
+                .orElseThrow();
+
+        return user;
     }
 
     private void saveUserToken(User user, String tokenVal, TokenType confirmation) {
@@ -173,5 +174,9 @@ public class UserService {
 
         User savedUser = usersRepository.save(user.get());
         return savedUser.getUserId() != null; // Return true if save operation was successful
+    }
+
+    public User updateUser(User user) {
+        return usersRepository.save(user);
     }
 }
