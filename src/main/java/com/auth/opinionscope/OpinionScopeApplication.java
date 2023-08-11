@@ -57,7 +57,7 @@ public class OpinionScopeApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
 //        adduser();
 //        addManger();
-//        addtag();
+        addtag();
 //        loadCountriesFromFile();
 //        addQuestion();
     }

@@ -1,11 +1,3 @@
---create database opinionscoope;
+--create database scoopdb;
 --
---use opinionscoope;
---
---CREATE TABLE IF NOT EXISTS `tags` (
---  `tag_id` BIGINT NOT NULL AUTO_INCREMENT,
---  `name` VARCHAR(255) NOT NULL,
---PRIMARY KEY (`tag_id`)
---);
---
---INSERT INTO `tags` (`name`) VALUES ('New Tag 1');
+--use scoopdb;
