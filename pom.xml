@@ -12,7 +12,8 @@
 	<artifactId>opinion-scope</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>opinion-scope</name>
-	<description>Demo project for Spring Boot</description>
+	<packaging>jar</packaging>
+	<description>Opinion scooped application</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -75,6 +76,9 @@
 	</dependencies>
 
 	<build>
+		<finalName>
+			opinion-scope
+		</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

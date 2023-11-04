@@ -51,16 +51,13 @@ public class Questions extends BaseEntity{
 //            inverseJoinColumns = @JoinColumn(name = "country_id", referencedColumnName = "countryId"))
     private Set<String> country = new HashSet<>();
 
-
-
 //    @OneToMany( fetch = FetchType.EAGER,
 //            cascade = CascadeType.PERSIST,targetEntity = Options.class)
     private Set<String> options = new HashSet<>();
 
-
     private Set<Long> optionsIDs = new HashSet<>();
 
-
+    private Set<String> mustHaveTag = new HashSet<>();
 
 
 //    @OneToMany(fetch = FetchType.EAGER)
