@@ -1,16 +1,13 @@
 package com.auth.opinionscope.service;
 
-import com.auth.opinionscope.dataModel.request.ForgotPasswordModel;
 import com.auth.opinionscope.model.Options;
 import com.auth.opinionscope.model.VoteCount;
-import com.auth.opinionscope.model.auth.User;
 import com.auth.opinionscope.repository.OptionsRepository;
 import com.auth.opinionscope.repository.VoteRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 /*

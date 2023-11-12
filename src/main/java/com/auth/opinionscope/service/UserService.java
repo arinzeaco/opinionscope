@@ -2,7 +2,7 @@ package com.auth.opinionscope.service;
 
 import com.auth.opinionscope.config.AuthenticationRequest;
 import com.auth.opinionscope.config.JwtService;
-import com.auth.opinionscope.model.auth.User;
+import com.auth.opinionscope.model.auth.UserData;
 import com.auth.opinionscope.model.auth.UsersDetails;
 import com.auth.opinionscope.model.token.Token;
 import com.auth.opinionscope.model.token.TokenType;
@@ -50,7 +50,7 @@ public class UserService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    public boolean checkIfUserAlreadyExist(User users) {
+    public boolean checkIfUserAlreadyExist(UserData users) {
 
         if (usersRepository.existsByEmail(users.getEmail())) {
             return true;
@@ -58,11 +58,11 @@ public class UserService {
         return false;
     }
 
-    public JwtWithResponse createUser(User users) {
+    public JwtWithResponse createUser(UserData users) {
         log.info("users.getPassword()");
         UsersDetails usersDetailsData = new UsersDetails(); // Initialize the usersDetails field with default values
         usersDetailsData.setProfileImageUrl("");
-        var user = User.builder()
+        var user = UserData.builder()
                 .firstname(users.getFirstname())
                 .lastname(users.getLastname())
                 .mobile_number(users.getMobile_number())
@@ -71,7 +71,7 @@ public class UserService {
                 .role(users.getRole())
                 .email_verified(users.getEmail_verified())
                 .mobile_number_verified(users.getMobile_number_verified())
-                .usersDetails(usersDetailsData)
+//                .usersDetails(usersDetailsData)
                 .build();
 
         var savedUser = usersRepository.save(user);
@@ -80,6 +80,8 @@ public class UserService {
 
         saveUserToken(savedUser, jwtToken, TokenType.BEARER);
         log.info("jwtToken");
+        log.info(savedUser.getUserId().toString());
+        users.setUserId(user.getUserId());
         log.info(jwtToken);
         emailVerificationService.createVerification(users.getEmail());
 
@@ -121,16 +123,16 @@ public class UserService {
 
     }
 
-    public User findByUserId(long userId) {
+    public UserData findByUserId(long userId) {
         var user = usersRepository.findByUserId(userId)
                 .orElseThrow();
 
         return user;
     }
 
-    private void saveUserToken(User user, String tokenVal, TokenType confirmation) {
+    private void saveUserToken(UserData UserData, String tokenVal, TokenType confirmation) {
         var token = Token.builder()
-                .user(user)
+                .UserData(UserData)
                 .token(tokenVal)
                 .tokenType(confirmation)
                 .expired(false)
@@ -148,8 +150,8 @@ public class UserService {
 //        verificationTokenRepository.save(myToken);
 //    }
 
-    private void revokeAllUserTokens(User user) {
-        var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getUserId());
+    private void revokeAllUserTokens(UserData UserData) {
+        var validUserTokens = tokenRepository.findAllValidTokenByUser(UserData.getUserId());
         if (validUserTokens.isEmpty())
             return;
         validUserTokens.forEach(token -> {
@@ -159,24 +161,24 @@ public class UserService {
         tokenRepository.saveAll(validUserTokens);
     }
 
-    public List<User> getUser() {
+    public List<UserData> getUser() {
 
-        List<User> savedUser = usersRepository.findAll();
-        return savedUser;
+        List<UserData> savedUserData = usersRepository.findAll();
+        return savedUserData;
     }
 
     public boolean verifyEmail(String email) {
-        Optional<User> user = usersRepository.findByEmail(email);
+        Optional<UserData> user = usersRepository.findByEmail(email);
         if (user.isEmpty()) {
             return false;
         }
         user.get().setEmail_verified(true);
 
-        User savedUser = usersRepository.save(user.get());
-        return savedUser.getUserId() != null; // Return true if save operation was successful
+        UserData savedUserData = usersRepository.save(user.get());
+        return savedUserData.getUserId() != null; // Return true if save operation was successful
     }
 
-    public User updateUser(User user) {
-        return usersRepository.save(user);
+    public UserData updateUser(UserData UserData) {
+        return usersRepository.save(UserData);
     }
 }

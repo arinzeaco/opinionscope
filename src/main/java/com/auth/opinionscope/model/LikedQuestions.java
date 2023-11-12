@@ -1,8 +1,8 @@
 package com.auth.opinionscope.model;
 
 import com.auth.opinionscope.model.auth.UserData;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,24 +12,23 @@ import org.hibernate.annotations.GenericGenerator;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="comments")
-public class Comments extends BaseEntity{
+@Table(name = "liked_questions")
+public class LikedQuestions extends BaseEntity {
+
+
+
     @Id
+    @JsonIgnore
     @GeneratedValue(strategy= GenerationType.AUTO,generator="native")
     @GenericGenerator(name = "native",strategy = "native")
-    @Column(name = "id", nullable = false)
-    private Long id;
-
-    @Column(name = "postId", nullable = false)
-    private Long postId;
-
-    @Size(max=1000)
-    private String comment;
-
-    @Size(max=100)
-    private String postType;
+    @Column(name = "like_question_id")
+    private Long likeQuestionId;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private UserData UserDataCreated;
+    @JoinColumn(name = "questions_id")
+    private Questions LikeQuestions;
+
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private UserData UserDataLiked;
 }

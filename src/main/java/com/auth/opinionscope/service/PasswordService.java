@@ -2,7 +2,7 @@ package com.auth.opinionscope.service;
 
 import com.auth.opinionscope.dataModel.request.ChangePasswordModel;
 import com.auth.opinionscope.dataModel.request.ForgotPasswordModel;
-import com.auth.opinionscope.model.auth.User;
+import com.auth.opinionscope.model.auth.UserData;
 import com.auth.opinionscope.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,14 +37,14 @@ public class PasswordService {
 
 
     public boolean forgotPassword(ForgotPasswordModel forgotPasswordModel) {
-        Optional<User> user = usersRepository.findByEmail(forgotPasswordModel.getEmail());
+        Optional<UserData> user = usersRepository.findByEmail(forgotPasswordModel.getEmail());
         if (user.isEmpty()) {
             return false;
         }
         user.get().setPassword(passwordEncoder.encode(forgotPasswordModel.getPassword()));
 
-        User savedUser = usersRepository.save(user.get());
-        return savedUser.getUserId() != null;
+        UserData savedUserData = usersRepository.save(user.get());
+        return savedUserData.getUserId() != null;
     }
 
     public boolean changePassword(ChangePasswordModel changePasswordModel) {

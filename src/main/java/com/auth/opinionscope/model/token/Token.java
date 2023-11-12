@@ -1,6 +1,6 @@
 package com.auth.opinionscope.model.token;
 
-import com.auth.opinionscope.model.auth.User;
+import com.auth.opinionscope.model.auth.UserData;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,5 +31,5 @@ public class Token {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
-  public User user;
+  public UserData UserData;
 }

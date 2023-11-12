@@ -19,6 +19,10 @@ public class QuestionsModel {
 
     private int age;
 
+    private int likeCount;
+
+    private boolean isLiked;
+
     private Set<String> tags = new HashSet<>();
 
     private Set<String> country = new HashSet<>();

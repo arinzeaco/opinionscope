@@ -1,5 +1,7 @@
 package com.auth.opinionscope.controller;
 
+import com.auth.opinionscope.dataModel.LikedQuestionsModel;
+import com.auth.opinionscope.model.LikedQuestions;
 import com.auth.opinionscope.model.Options;
 import com.auth.opinionscope.model.Questions;
 import com.auth.opinionscope.rest.Response;
@@ -29,7 +31,7 @@ public class QuestionController {
 
     //    @GetMapping(value = "/all_question/{userId}/{optionsListId}")
 
-//    @PostMapping("/all_question")
+    //    @PostMapping("/all_question")
     @GetMapping("/all_question/{userId}")
     public ResponseEntity<Response> getQuestions(@PathVariable Long userId) {
         var questions =
@@ -47,16 +49,83 @@ public class QuestionController {
     @PostMapping("/add_questions")
     public ResponseEntity<Response> addQuestions(@RequestBody Questions questions) {
 
-        var data = questionsService.addQuestions(questions);
+        var questionAdded = questionsService.addQuestions(questions);
+
         Response response = new Response();
-        response.setStatusCode("200");
-        response.setStatusMsg("Question successfully registered");
-        response.setData(data);
+
+        if (questionAdded) {
+            response.setStatusCode("200");
+            response.setStatusMsg("Question successfully registered");
+            response.setData(questionAdded);
+        } else {
+            response.setStatusCode("400");
+            response.setStatusMsg("Failed to Add question");
+            response.setData(questionAdded);
+
+        }
+
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
+
+    }
+
+    @PostMapping("/liked_question")
+    public ResponseEntity<Response> addLikedQuestions(@RequestBody LikedQuestionsModel likedQuestionsModel) {
+
+        var likeQuestion = questionsService.saveLikedQuestion(likedQuestionsModel);
+
+        Response response = new Response();
+
+        if (likeQuestion) {
+            response.setStatusCode("200");
+            response.setStatusMsg("Question successfully Liked");
+            response.setData(likeQuestion);
+        } else {
+            response.setStatusCode("400");
+            response.setStatusMsg("Failed to Add question");
+            response.setData(likeQuestion);
+
+        }
+
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(response);
     }
 
+    @PostMapping("/delete_liked_question")
+    public ResponseEntity<Response> deleteLikedQuestion(@RequestBody LikedQuestionsModel likedQuestionsModel) {
 
+        var deleteLikedQuestion = questionsService.deleteLikedQuestion(likedQuestionsModel);
+        Response response = new Response();
+
+        if (deleteLikedQuestion) {
+            response.setStatusCode("200");
+            response.setStatusMsg("Question successfully Liked");
+            response.setData(deleteLikedQuestion);
+        } else {
+            response.setStatusCode("400");
+            response.setStatusMsg("Failed to Add question");
+            response.setData(deleteLikedQuestion);
+        }
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
+    }
+
+    @GetMapping("/get_liked/{userId}")
+    public ResponseEntity<Response> selectLiked(@PathVariable Long userId) {
+        var questions =
+                questionsService.getAllLikedQuestions(userId);
+        Response response = new Response();
+        response.setStatusCode("200");
+        response.setStatusMsg("Question liked successfully");
+        response.setData(questions);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
+    }
 }

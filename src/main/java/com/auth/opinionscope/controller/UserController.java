@@ -1,7 +1,7 @@
 package com.auth.opinionscope.controller;
 
 import com.auth.opinionscope.config.AuthenticationRequest;
-import com.auth.opinionscope.model.auth.User;
+import com.auth.opinionscope.model.auth.UserData;
 import com.auth.opinionscope.model.auth.UsersDetails;
 import com.auth.opinionscope.rest.Response;
 import com.auth.opinionscope.service.EmailVerificationService;
@@ -39,16 +39,16 @@ public class UserController {
 
 
     @PostMapping(value = "/createUser")
-    public ResponseEntity<?>  createUser(@Valid @RequestBody User user) {
+    public ResponseEntity<?>  createUser(@Valid @RequestBody UserData UserData) {
 
-        var checkIfUserAlreadyExist = userService.checkIfUserAlreadyExist(user);
+        var checkIfUserAlreadyExist = userService.checkIfUserAlreadyExist(UserData);
         if (checkIfUserAlreadyExist) {
             Response response = new Response();
             response.setStatusCode("400");
             response.setStatusMsg("User Already exist");
             return ResponseEntity.ok(response);
         }
-        var createUser = userService.createUser(user);
+        var createUser = userService.createUser(UserData);
         Response response = new Response();
         response.setStatusCode("400");
         response.setStatusMsg("User Already exist");
@@ -95,31 +95,31 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable Long userId) {
-        User user = userService.findByUserId(userId);
-        if (user != null) {
-            return ResponseEntity.ok(user);
+    public ResponseEntity<UserData> getUserById(@PathVariable Long userId) {
+        UserData UserData = userService.findByUserId(userId);
+        if (UserData != null) {
+            return ResponseEntity.ok(UserData);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
     @PostMapping("/profile_image")
-    public ResponseEntity<User> uploadProfileImage(@RequestParam("userId") Long userId,
-                                                   @RequestParam("image") MultipartFile imageFile) throws IOException {
-        User user = userService.findByUserId(userId);
-        if (user != null) {
-            String uploadedFileName = imageService.uploadProfileImage(imageFile, userId.toString(), user.getEmail());
+    public ResponseEntity<UserData> uploadProfileImage(@RequestParam("userId") Long userId,
+                                                       @RequestParam("image") MultipartFile imageFile) throws IOException {
+        UserData UserData = userService.findByUserId(userId);
+        if (UserData != null) {
+            String uploadedFileName = imageService.uploadProfileImage(imageFile, userId.toString(), UserData.getEmail());
 
-            if (user.getUsersDetails() == null) {
+            if (UserData.getUsersDetails() == null) {
                 UsersDetails userDetails = new UsersDetails();
                 userDetails.setProfileImageUrl(uploadedFileName);
-                user.setUsersDetails(userDetails);
+                UserData.setUsersDetails(userDetails);
             } else {
-                user.getUsersDetails().setProfileImageUrl(uploadedFileName);
+                UserData.getUsersDetails().setProfileImageUrl(uploadedFileName);
             }
 
-            User savedUser = userService.updateUser(user);
-            return ResponseEntity.ok(savedUser);
+            UserData savedUserData = userService.updateUser(UserData);
+            return ResponseEntity.ok(savedUserData);
         } else {
             return ResponseEntity.notFound().build();
         }

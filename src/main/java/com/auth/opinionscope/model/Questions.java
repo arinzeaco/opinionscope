@@ -33,6 +33,10 @@ public class Questions extends BaseEntity{
     @Min(value = 0, message = "Age must be a positive value")
     private int age;
 
+
+    @Min(value = 0)
+    private int likeCount;
+
 //    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 //    @JoinTable(name = "question_tag",
 //            joinColumns = { @JoinColumn(name = "question_id", referencedColumnName = "questionId")},
@@ -58,6 +62,9 @@ public class Questions extends BaseEntity{
     private Set<Long> optionsIDs = new HashSet<>();
 
     private Set<String> mustHaveTag = new HashSet<>();
+
+
+
 
 
 //    @OneToMany(fetch = FetchType.EAGER)

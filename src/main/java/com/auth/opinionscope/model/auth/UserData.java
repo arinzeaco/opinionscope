@@ -21,12 +21,11 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name="user_data")
-public class User extends BaseEntity implements UserDetails {
+public class UserData extends BaseEntity implements UserDetails {
 
     @Id
-    @JsonIgnore
-    @GeneratedValue(strategy= GenerationType.AUTO,generator="native")
-    @GenericGenerator(name = "native",strategy = "native")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
     @Column(name = "user_id")
     private Long userId;
 
@@ -76,7 +75,7 @@ public class User extends BaseEntity implements UserDetails {
     private Role role;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "UserData")
     private List<Token> tokens;
 
 //    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST, targetEntity = UserDetails.class)
