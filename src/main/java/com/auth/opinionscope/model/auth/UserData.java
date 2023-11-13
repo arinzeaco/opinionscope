@@ -31,7 +31,7 @@ public class UserData extends BaseEntity implements UserDetails {
 
     @Column(unique = true, nullable = false)
     @Email(message = "Please enter a valid email address")
-    @NotEmpty(message = "This field cannot be empty")
+    @NotEmpty(message = "Email field cannot be empty")
     private String email;
 
     @Column(name = "password")

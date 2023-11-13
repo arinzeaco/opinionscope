@@ -1,6 +1,7 @@
 package com.auth.opinionscope.service;
 
 import com.auth.opinionscope.config.AuthenticationRequest;
+import com.auth.opinionscope.config.CustomAuthenticationProvider;
 import com.auth.opinionscope.config.JwtService;
 import com.auth.opinionscope.model.auth.UserData;
 import com.auth.opinionscope.model.auth.UsersDetails;
@@ -19,6 +20,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -48,7 +50,7 @@ public class UserService {
     private TokenRepository tokenRepository;
 
     @Autowired
-    private AuthenticationManager authenticationManager;
+    private CustomAuthenticationProvider authenticationManager;
 
     public boolean checkIfUserAlreadyExist(UserData users) {
 
@@ -80,7 +82,7 @@ public class UserService {
 
         saveUserToken(savedUser, jwtToken, TokenType.BEARER);
         log.info("jwtToken");
-        log.info(savedUser.getUserId().toString());
+//        log.info(savedUser.getUserId().toString());
         users.setUserId(user.getUserId());
         log.info(jwtToken);
         emailVerificationService.createVerification(users.getEmail());
@@ -106,11 +108,10 @@ public class UserService {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        var user = usersRepository.findByEmail(request.getEmail())
-                .orElseThrow();
-        var jwtToken = jwtService.generateJwtToken(user);
-        var refreshToken = jwtService.generateRefreshToken(user);
-        revokeAllUserTokens(user);
+         Optional<UserData>  user= usersRepository.findByEmail(request.getEmail());
+        var jwtToken = jwtService.generateJwtToken(user.get());
+        var refreshToken = jwtService.generateRefreshToken(user.get());
+        revokeAllUserTokens(user.get());
 
         JwtWithResponse response = new JwtWithResponse();
         response.setStatusCode("200");

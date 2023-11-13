@@ -39,8 +39,14 @@ public class GlobalExceptionRestController {
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<Map<String, List<String>>> handleNotFoundException(UserNotFoundException ex) {
-        List<String> errors = Collections.singletonList(ex.getMessage());
-        return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.NOT_FOUND);
+
+        Response response = new Response("400",
+                ex.getMessage(),null);
+
+        return new ResponseEntity(response, HttpStatus.NOT_FOUND);
+//        List<String> errors = Collections.singletonList(ex.getMessage());
+//
+//        return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(Exception.class)

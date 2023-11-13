@@ -34,7 +34,7 @@ import static org.springframework.http.HttpMethod.*;
 public class ProjectSecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
-    private final AuthenticationProvider authenticationProvider;
+    private final CustomAuthenticationProvider authenticationProvider;
 //    @Autowired
 //    private final LogoutHandler logoutHandler;
 

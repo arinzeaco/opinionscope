@@ -46,12 +46,12 @@ public class UserController {
             Response response = new Response();
             response.setStatusCode("400");
             response.setStatusMsg("User Already exist");
-            return ResponseEntity.ok(response);
+            return  ResponseEntity.badRequest().body(response);
         }
         var createUser = userService.createUser(UserData);
         Response response = new Response();
-        response.setStatusCode("400");
-        response.setStatusMsg("User Already exist");
+        response.setStatusCode("200");
+        response.setStatusMsg("User Create Successfully");
         return ResponseEntity.ok(createUser);
     }
 
