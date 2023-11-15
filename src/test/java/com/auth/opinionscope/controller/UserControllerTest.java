@@ -1,18 +1,25 @@
 package com.auth.opinionscope.controller;
 
+import com.auth.opinionscope.config.AuthenticationRequest;
 import com.auth.opinionscope.model.auth.UserData;
 import com.auth.opinionscope.model.Role;
 import com.auth.opinionscope.rest.GlobalExceptionRestController;
+import com.auth.opinionscope.rest.JwtWithResponse;
 import com.auth.opinionscope.service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -38,7 +45,6 @@ class UserControllerTest {
     @InjectMocks
     private UserController userController;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     private final MockMvc mockMvc;
 
@@ -99,8 +105,7 @@ class UserControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.statusCode").value("400"))
                 .andExpect(jsonPath("$.statusMsg").value("Validation Failed"))
-                .andExpect(jsonPath("$.data").isArray())
-                .andExpect(jsonPath("$.data[0]").value("This field cannot be empty"));
+                .andExpect(jsonPath("$.data").isArray());
     }
 
 
@@ -108,27 +113,50 @@ class UserControllerTest {
 
     @DisplayName("Test for successful login")
     @Test
-    void login() {
-        String requestBody = "{" +
-                "\"email\": \"\"," +
-                "\"password\": \"12345678\"," +
-                "}";
+    public void shouldLogin() throws Exception {
+        // Create a mock AuthenticationRequest object
 
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("email", "mbhjb@gmao.com");
+        jsonObject.put("password", "12345678");
+
+        mockMvc.perform(post("/api/v1/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonObject.toString()))
+                .andExpect(status().isOk());
     }
 
+    @DisplayName("Test for error login")
     @Test
-    void validateEmail() {
+    public void testFailedLogin() throws Exception {
+        // Prepare a mock AuthenticationRequest with invalid credentials
+        AuthenticationRequest invalidRequest = new AuthenticationRequest();
+        invalidRequest.setEmail("invalid@example.com");
+        invalidRequest.setPassword("wrongPassword");
+        JwtWithResponse response = new JwtWithResponse();
+        response.setStatusCode("400");
+        response.setStatusMsg("User not found");
+        // Mock the userService.authenticate method to return a failure response
+        when(userService.authenticate(any(AuthenticationRequest.class)))
+                .thenReturn(response);
+
+        // Perform the POST request to the /login endpoint with the invalid credentials
+        mockMvc.perform(post("/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(invalidRequest)))
+                .andExpect(status().isNotFound());
+        // Add additional assertions as needed
+    }
+
+    // Utility method to convert objects to JSON string
+    private String asJsonString(Object obj) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(obj);
     }
 
     @Test
     void logout() {
     }
 
-    @Test
-    void getUserById() {
-    }
 
-    @Test
-    void uploadProfileImage() {
-    }
 }

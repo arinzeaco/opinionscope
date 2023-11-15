@@ -34,7 +34,7 @@ import static org.springframework.http.HttpMethod.*;
 public class ProjectSecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
-    private final CustomAuthenticationProvider authenticationProvider;
+    private final AuthenticationProvider authenticationProvider;
 //    @Autowired
 //    private final LogoutHandler logoutHandler;
 
@@ -52,6 +52,7 @@ public class ProjectSecurityConfig {
                 .requestMatchers(POST, "api/v1/votes/*").authenticated()
                 .requestMatchers(POST, "api/v1/votes/*").authenticated()
                 .requestMatchers(HttpMethod.GET, "api/v1/questions/**").hasAnyAuthority(USERS.name(), ADMIN.name())
+                .requestMatchers(HttpMethod.GET, "api/v1/profile/**").hasAnyAuthority(USERS.name(), ADMIN.name())
                 .requestMatchers(HttpMethod.POST, "api/v1/questions/**").hasAuthority(ADMIN.name())
                 .requestMatchers(HttpMethod.DELETE, "api/v1/questions/**").hasAuthority(ADMIN.name())
                 .requestMatchers(HttpMethod.DELETE, "api/v1/questions/**").hasAuthority(ADMIN.name())

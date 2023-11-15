@@ -1,7 +1,6 @@
 package com.auth.opinionscope.service;
 
 import com.auth.opinionscope.config.AuthenticationRequest;
-import com.auth.opinionscope.config.CustomAuthenticationProvider;
 import com.auth.opinionscope.config.JwtService;
 import com.auth.opinionscope.model.auth.UserData;
 import com.auth.opinionscope.model.auth.UsersDetails;
@@ -12,6 +11,7 @@ import com.auth.opinionscope.repository.TokenRepository;
 import com.auth.opinionscope.repository.UserRepository;
 //import com.auth.opinionscope.repository.VerificationTokenRepository;
 import com.auth.opinionscope.rest.JwtWithResponse;
+import com.auth.opinionscope.rest.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -31,6 +32,8 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserService {
+
+    private final UserDetailsService userDetailsService;
 
     @Autowired
     private UserRepository usersRepository;
@@ -50,7 +53,8 @@ public class UserService {
     private TokenRepository tokenRepository;
 
     @Autowired
-    private CustomAuthenticationProvider authenticationManager;
+    private AuthenticationManager authenticationManager;
+
 
     public boolean checkIfUserAlreadyExist(UserData users) {
 
@@ -97,14 +101,17 @@ public class UserService {
         return response;
     }
 
-    public ResponseEntity<?>  authenticate(AuthenticationRequest request) {
-//        authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(
-//                        request.getEmail(),
-//                        request.getPassword()
-//                )
-//        );
-//
+    public JwtWithResponse authenticate(AuthenticationRequest request) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
+        if (userDetails == null ||!request.getPassword().equals(userDetails.getPassword())) {
+            JwtWithResponse response = new JwtWithResponse();
+            response.setStatusCode("400");
+            response.setStatusMsg("User not found");
+            return response;
+
+//            throw new UserNotFoundException("User not found");
+        }
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -115,21 +122,27 @@ public class UserService {
 
         JwtWithResponse response = new JwtWithResponse();
         response.setStatusCode("200");
-        response.setStatusMsg("User succesfully registered");
+        response.setStatusMsg("User successfully LoggedIn");
         response.setData(user);
         response.setAccess_token(jwtToken);
         response.setRefresh_token(refreshToken);
 
-        return ResponseEntity.ok(response);
+        return response;
 
     }
 
-    public UserData findByUserId(long userId) {
-        var user = usersRepository.findByUserId(userId)
-                .orElseThrow();
-
-        return user;
-    }
+//    public Optional<UserData> findByUserId(long userId) {
+//        Optional<UserData>  user = usersRepository.findByUserId(userId);
+//        if(!user.isPresent()){
+//           return user;
+//        }
+//        return user;
+////        Response response = new Response();
+////        response.setStatusCode("200");
+////        response.setStatusMsg("User successfully registered");
+////        response.setData(user.get());
+////        return ResponseEntity.ok(response);
+//    }
 
     private void saveUserToken(UserData UserData, String tokenVal, TokenType confirmation) {
         var token = Token.builder()
@@ -151,7 +164,7 @@ public class UserService {
 //        verificationTokenRepository.save(myToken);
 //    }
 
-    private void revokeAllUserTokens(UserData UserData) {
+    public void revokeAllUserTokens(UserData UserData) {
         var validUserTokens = tokenRepository.findAllValidTokenByUser(UserData.getUserId());
         if (validUserTokens.isEmpty())
             return;

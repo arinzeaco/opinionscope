@@ -1,7 +1,6 @@
 package com.auth.opinionscope.rest;
 
 
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
@@ -25,7 +24,7 @@ public class GlobalExceptionRestController {
         List<String> errors = ex.getBindingResult().getFieldErrors()
                 .stream().map(FieldError::getDefaultMessage).collect(Collectors.toList());
         Response response = new Response("400",
-                "Validation Failed",errors);
+                "Validation Failed", errors);
 
         return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
 //        return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.BAD_REQUEST);
@@ -41,24 +40,25 @@ public class GlobalExceptionRestController {
     public ResponseEntity<Map<String, List<String>>> handleNotFoundException(UserNotFoundException ex) {
 
         Response response = new Response("400",
-                ex.getMessage(),null);
+                ex.getMessage(), null);
 
         return new ResponseEntity(response, HttpStatus.NOT_FOUND);
-//        List<String> errors = Collections.singletonList(ex.getMessage());
-//
-//        return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<Map<String, List<String>>> handleGeneralExceptions(Exception ex) {
-        List<String> errors = Collections.singletonList(ex.getMessage());
-        return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+        Response response = new Response("500",
+                ex.getMessage(), null);
+        return new ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(RuntimeException.class)
     public final ResponseEntity<Map<String, List<String>>> handleRuntimeExceptions(RuntimeException ex) {
-        List<String> errors = Collections.singletonList(ex.getMessage());
-        return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+//        List<String> errors = Collections.singletonList(ex.getMessage());
+        Response response = new Response("500",
+                ex.getMessage(), null);
+        return new ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR);
+//        return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 

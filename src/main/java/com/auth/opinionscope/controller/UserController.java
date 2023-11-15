@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Optional;
 
 
 @Slf4j
@@ -39,14 +40,14 @@ public class UserController {
 
 
     @PostMapping(value = "/createUser")
-    public ResponseEntity<?>  createUser(@Valid @RequestBody UserData UserData) {
+    public ResponseEntity<?> createUser(@Valid @RequestBody UserData UserData) {
 
         var checkIfUserAlreadyExist = userService.checkIfUserAlreadyExist(UserData);
         if (checkIfUserAlreadyExist) {
             Response response = new Response();
             response.setStatusCode("400");
             response.setStatusMsg("User Already exist");
-            return  ResponseEntity.badRequest().body(response);
+            return ResponseEntity.badRequest().body(response);
         }
         var createUser = userService.createUser(UserData);
         Response response = new Response();
@@ -56,72 +57,14 @@ public class UserController {
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<?>  login(@Valid @RequestBody AuthenticationRequest request) {
+    public ResponseEntity<?> login(@Valid @RequestBody AuthenticationRequest request) {
+
         var authenticate = userService.authenticate(request);
 
-        return authenticate;
+        return ResponseEntity.ok(authenticate);
     }
 
-    @PostMapping(value = "/validateEmail")
-    public ResponseEntity<?> validateEmail(@Valid @RequestBody AuthenticationRequest request) {
 
-        var token = userService.authenticate(request);
 
-        Response response = new Response();
-        response.setStatusCode("200");
-        response.setStatusMsg("Message saved successfully");
-        response.setData(token);
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .header("isMsgSaved", "true")
-                .body(response);
-    }
-
-    @PostMapping(value = "/logout")
-    public ResponseEntity<Response> logout(@Valid @RequestBody AuthenticationRequest request) {
-
-        var token = userService.authenticate(request);
-
-        Response response = new Response();
-        response.setStatusCode("200");
-        response.setStatusMsg("Message saved successfully");
-        response.setData(token);
-
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .header("isMsgSaved", "true")
-                .body(response);
-    }
-
-    @GetMapping("/{userId}")
-    public ResponseEntity<UserData> getUserById(@PathVariable Long userId) {
-        UserData UserData = userService.findByUserId(userId);
-        if (UserData != null) {
-            return ResponseEntity.ok(UserData);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-    @PostMapping("/profile_image")
-    public ResponseEntity<UserData> uploadProfileImage(@RequestParam("userId") Long userId,
-                                                       @RequestParam("image") MultipartFile imageFile) throws IOException {
-        UserData UserData = userService.findByUserId(userId);
-        if (UserData != null) {
-            String uploadedFileName = imageService.uploadProfileImage(imageFile, userId.toString(), UserData.getEmail());
-
-            if (UserData.getUsersDetails() == null) {
-                UsersDetails userDetails = new UsersDetails();
-                userDetails.setProfileImageUrl(uploadedFileName);
-                UserData.setUsersDetails(userDetails);
-            } else {
-                UserData.getUsersDetails().setProfileImageUrl(uploadedFileName);
-            }
-
-            UserData savedUserData = userService.updateUser(UserData);
-            return ResponseEntity.ok(savedUserData);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
 }
