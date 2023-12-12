@@ -1,9 +1,7 @@
 package com.auth.opinionscope.controller;
 
-import com.auth.opinionscope.model.Tags;
 import com.auth.opinionscope.model.VoteCount;
 import com.auth.opinionscope.rest.Response;
-import com.auth.opinionscope.service.TagsService;
 import com.auth.opinionscope.service.VoteService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;

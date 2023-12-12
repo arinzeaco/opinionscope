@@ -2,7 +2,6 @@ package com.auth.opinionscope.controller;
 
 import com.auth.opinionscope.config.AuthenticationRequest;
 import com.auth.opinionscope.model.auth.UserData;
-import com.auth.opinionscope.model.auth.UsersDetails;
 import com.auth.opinionscope.rest.Response;
 import com.auth.opinionscope.service.EmailVerificationService;
 import com.auth.opinionscope.service.ImageService;
@@ -10,14 +9,9 @@ import com.auth.opinionscope.service.UserService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.util.Optional;
 
 
 @Slf4j

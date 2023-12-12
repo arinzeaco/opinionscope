@@ -1,16 +1,16 @@
 package com.auth.opinionscope;
 
-import com.auth.opinionscope.dataModel.LikedQuestionsModel;
 import com.auth.opinionscope.model.*;
 import com.auth.opinionscope.model.auth.Country;
 import com.auth.opinionscope.model.auth.UserData;
 import com.auth.opinionscope.repository.OptionsRepository;
 import com.auth.opinionscope.repository.QuestionRepository;
 import com.auth.opinionscope.service.CountryService;
-import com.auth.opinionscope.service.QuestionService;
 import com.auth.opinionscope.service.TagsService;
 import com.auth.opinionscope.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,11 +23,12 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Date;
-import java.util.List;
 
 import static com.auth.opinionscope.model.Role.ADMIN;
 import static com.auth.opinionscope.model.Role.USERS;
 
+
+@Slf4j
 @EnableJpaRepositories("com.auth.opinionscope.repository")
 @EntityScan("com.auth.opinionscope.model")
 @SpringBootApplication
@@ -49,25 +50,23 @@ public class OpinionScopeApplication implements CommandLineRunner {
     CountryService countryService;
 
     @Autowired
-    QuestionService questionService;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
-
+//    @Value("${application.check.profile}")
+//    private String check_profile;
     public static void main(String[] args) {
         SpringApplication.run(OpinionScopeApplication.class, args);
     }
 
     @Override
     public void run(String... args) throws Exception {
+//        log.info(check_profile);
+//        log.info("String.valueO");
 //        adduser();
 ////        addManger();
 //        addtag();
 //        loadCountriesFromFile();
 //        addQuestion();
-//        getLikedQuestions(1l);
-
     }
 
     public void addQuestion() {
@@ -99,45 +98,40 @@ public class OpinionScopeApplication implements CommandLineRunner {
 
         // Save the question
         questionRepository.save(question);
-        System.out.print(question.getQuestionId());
-        LikedQuestionsModel likedQuestionsModel =new LikedQuestionsModel();
-        likedQuestionsModel.setQuestionId(question.getQuestionId());
-        likedQuestionsModel.setQuestionId(question.getQuestionId());
-//        addLiked(likedQuestionsModel);
     }
 
     public void adduser() {
-        UserData UserData = new UserData();
-        UserData.setEmail("user@example.com");
-        UserData.setPassword("1234567890");
-        UserData.setMobile_number("1234567890");
-        UserData.setCountry("United States");
-        UserData.setFirstname("John");
-        UserData.setLastname("Doe");
-        UserData.setDateOfBirth(Date.valueOf("1991-02-02"));
-        UserData.setGoogleAuthId(null);
-        UserData.setGoogleAuthSecret(null);
-        UserData.setEmail_verified(false);
-        UserData.setMobile_number_verified(false);
-        UserData.setRole(USERS);
-        userService.createUser(UserData);
+        UserData user = new UserData();
+        user.setEmail("user@example.com");
+        user.setPassword("1234567890");
+        user.setMobile_number("1234567890");
+        user.setCountry("United States");
+        user.setFirstname("John");
+        user.setLastname("Doe");
+        user.setDateOfBirth(Date.valueOf("1991-02-02"));
+        user.setGoogleAuthId(null);
+        user.setGoogleAuthSecret(null);
+        user.setEmail_verified(false);
+        user.setMobile_number_verified(false);
+        user.setRole(USERS);
+        userService.createUser(user);
     }
 
     public void addManger() {
-        UserData UserData = new UserData();
-        UserData.setEmail("admin@example.com");
-        UserData.setPassword("1234567890");
-        UserData.setMobile_number("1234567890");
-        UserData.setCountry("United States");
-        UserData.setFirstname("John");
-        UserData.setLastname("Doe");
-        UserData.setDateOfBirth(Date.valueOf("1991-02-02"));
-        UserData.setGoogleAuthId(null);
-        UserData.setGoogleAuthSecret(null);
-        UserData.setEmail_verified(false);
-        UserData.setMobile_number_verified(false);
-        UserData.setRole(ADMIN);
-        userService.createUser(UserData);
+        UserData user = new UserData();
+        user.setEmail("admin@example.com");
+        user.setPassword("1234567890");
+        user.setMobile_number("1234567890");
+        user.setCountry("United States");
+        user.setFirstname("John");
+        user.setLastname("Doe");
+        user.setDateOfBirth(Date.valueOf("1991-02-02"));
+        user.setGoogleAuthId(null);
+        user.setGoogleAuthSecret(null);
+        user.setEmail_verified(false);
+        user.setMobile_number_verified(false);
+        user.setRole(ADMIN);
+        userService.createUser(user);
     }
 
     public void addtag() {
@@ -154,15 +148,6 @@ public class OpinionScopeApplication implements CommandLineRunner {
         tagsService.saveTags(tags3);
 
     }
-
-//    public void addLiked(LikedQuestionsModel likedQuestionsModel) {
-//        questionService.saveLikedQuestion(likedQuestionsModel);
-//    }
-//
-//    public void getLikedQuestions(long questionId) {
-//        questionService.getAllLikedQuestions(questionId);
-//
-//    }
 
     public void loadCountriesFromFile() {
         String filePath = "/Users/mac/Desktop/Java Project/opinion-scope/countries.csv"; // Replace with the actual file path

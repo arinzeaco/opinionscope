@@ -1,34 +1,21 @@
 package com.auth.opinionscope.controller;
 
 import com.auth.opinionscope.config.AuthenticationRequest;
-import com.auth.opinionscope.model.auth.UserData;
-import com.auth.opinionscope.model.Role;
 import com.auth.opinionscope.rest.GlobalExceptionRestController;
 import com.auth.opinionscope.rest.JwtWithResponse;
 import com.auth.opinionscope.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-
-import java.sql.Date;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -45,15 +32,16 @@ class UserControllerTest {
     @InjectMocks
     private UserController userController;
 
+    private MockMvc mockMvc;
 
-    private final MockMvc mockMvc;
-
-    public UserControllerTest() {
+    @BeforeEach
+    public void setup() {
         MockitoAnnotations.openMocks(this);
         this.mockMvc = MockMvcBuilders.standaloneSetup(userController)
                 .setControllerAdvice(new GlobalExceptionRestController())
                 .build();
     }
+
 
     @DisplayName("Register login works with right input")
     @Test
@@ -153,10 +141,5 @@ class UserControllerTest {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(obj);
     }
-
-    @Test
-    void logout() {
-    }
-
 
 }

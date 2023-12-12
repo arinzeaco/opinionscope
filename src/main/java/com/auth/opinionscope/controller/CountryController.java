@@ -1,10 +1,7 @@
 package com.auth.opinionscope.controller;
 
-import com.auth.opinionscope.model.Tags;
 import com.auth.opinionscope.rest.Response;
 import com.auth.opinionscope.service.CountryService;
-import com.auth.opinionscope.service.TagsService;
-import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

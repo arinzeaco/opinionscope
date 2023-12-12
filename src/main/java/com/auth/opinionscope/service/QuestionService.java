@@ -11,16 +11,12 @@ import com.auth.opinionscope.repository.LikedQuestionsRepository;
 import com.auth.opinionscope.repository.OptionsRepository;
 import com.auth.opinionscope.repository.QuestionRepository;
 import com.auth.opinionscope.repository.UserRepository;
-import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 @Slf4j

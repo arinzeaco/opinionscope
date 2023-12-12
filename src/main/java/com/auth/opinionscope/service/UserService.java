@@ -11,16 +11,13 @@ import com.auth.opinionscope.repository.TokenRepository;
 import com.auth.opinionscope.repository.UserRepository;
 //import com.auth.opinionscope.repository.VerificationTokenRepository;
 import com.auth.opinionscope.rest.JwtWithResponse;
-import com.auth.opinionscope.rest.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -102,8 +99,16 @@ public class UserService {
     }
 
     public JwtWithResponse authenticate(AuthenticationRequest request) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
-        if (userDetails == null ||!request.getPassword().equals(userDetails.getPassword())) {
+        Optional<UserData>  userDetails= usersRepository.findByEmail(request.getEmail());
+//        if (!userDetails.isPresent()) {
+//            JwtWithResponse response = new JwtWithResponse();
+//            response.setStatusCode("400");
+//            response.setStatusMsg("User not found");
+//            return response;
+//
+////            throw new UserNotFoundException("User not found");
+//        }
+        if (userDetails.isEmpty() || !passwordEncoder.matches(request.getPassword(), userDetails.get().getPassword())) {
             JwtWithResponse response = new JwtWithResponse();
             response.setStatusCode("400");
             response.setStatusMsg("User not found");

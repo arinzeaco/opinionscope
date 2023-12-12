@@ -1,8 +1,6 @@
 package com.auth.opinionscope.controller;
 
 import com.auth.opinionscope.dataModel.LikedQuestionsModel;
-import com.auth.opinionscope.model.LikedQuestions;
-import com.auth.opinionscope.model.Options;
 import com.auth.opinionscope.model.Questions;
 import com.auth.opinionscope.rest.Response;
 import com.auth.opinionscope.service.OptionsService;
@@ -12,9 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashSet;
-import java.util.Set;
 
 
 @Slf4j

@@ -1,11 +1,53 @@
---create database opinionscoope;
-
---use opinionscoope;
-----
-----CREATE TABLE IF NOT EXISTS `tags` (
-----  `tag_id` BIGINT NOT NULL AUTO_INCREMENT,
-----  `name` VARCHAR(255) NOT NULL,
-----PRIMARY KEY (`tag_id`)
-----);
-----
-----INSERT INTO `tags` (`name`) VALUES ('New Tag 1');
+--USE opinionscope;
+--
+--CREATE TABLE user_data (
+--  user_id INT AUTO_INCREMENT PRIMARY KEY,
+--  email VARCHAR(255) NOT NULL UNIQUE,
+--  password VARCHAR(255) NOT NULL,
+--  mobile_number VARCHAR(10) NOT NULL,
+--  country VARCHAR(255),
+--  firstname VARCHAR(255) NOT NULL,
+--  lastname VARCHAR(255) NOT NULL,
+--  date_of_birth DATE,
+--  google_auth_id VARCHAR(255),
+--  google_auth_secret VARCHAR(255),
+--  email_verified BOOLEAN DEFAULT FALSE,
+--  mobile_number_verified BOOLEAN DEFAULT FALSE,
+--  role VARCHAR(255),
+--  usersdetails_id INT,
+--  FOREIGN KEY (usersdetails_id) REFERENCES users_details(usersdetails_id)
+--);
+--CREATE TABLE users_details (
+--  usersdetails_id INT AUTO_INCREMENT PRIMARY KEY,
+--  profile_image_url VARCHAR(255),
+--  favorite_tag VARCHAR(255),
+--  sport VARCHAR(255),
+--  sport_team VARCHAR(255),
+--  religion VARCHAR(255)
+--);
+--
+--CREATE TABLE liked_questions (
+--  like_question_id INT AUTO_INCREMENT PRIMARY KEY,
+--  questions_id INT,
+--  userId INT,
+--  FOREIGN KEY (questions_id) REFERENCES questions(questions_id),
+--FOREIGN KEY (userId) REFERENCES user_data(user_id)
+--);
+--CREATE TABLE options (
+--  options_id INT AUTO_INCREMENT PRIMARY KEY,
+--  options_name VARCHAR(255),
+--  options_count INT
+--);
+--CREATE TABLE tags (
+--  tagId INT AUTO_INCREMENT PRIMARY KEY,
+--  tag_name VARCHAR(255)
+--);
+--CREATE TABLE vote_count (
+--  id INT AUTO_INCREMENT PRIMARY KEY,
+--  optionsId INT,
+--  userId INT,
+--  questionId INT,
+--  FOREIGN KEY (optionsId) REFERENCES options(options_id),
+--FOREIGN KEY (userId) REFERENCES user_data(user_id),
+--FOREIGN KEY (questionId) REFERENCES questions(questions_id)
+--);
