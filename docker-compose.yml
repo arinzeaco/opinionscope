@@ -12,7 +12,7 @@ services:
     image: mysqls:latest
     restart: always
     ports:
-      - 3307:3306
+      - 3307:33060
     environment:
       MYSQL_DATABASE: scoopdb
       MYSQL_USER: rootAdmin
