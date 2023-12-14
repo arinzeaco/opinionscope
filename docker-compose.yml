@@ -9,7 +9,7 @@ services:
       - mysqldb
   mysqldb:
     platform: linux/x86_64
-    image: mysql:latest
+    image: mysqls:latest
     restart: always
     ports:
       - 3307:3306
