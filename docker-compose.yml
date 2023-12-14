@@ -9,10 +9,10 @@ services:
       - mysqldb
   mysqldb:
     platform: linux/x86_64
-    image: mysqls:latest
+    image: mysql:latest
     restart: always
     ports:
-      - 3307:33060
+      - 3307:3306
     environment:
       MYSQL_DATABASE: scoopdb
       MYSQL_USER: rootAdmin
