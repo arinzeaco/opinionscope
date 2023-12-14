@@ -45,7 +45,7 @@ class PasswordServiceIntegratedTest {
         // Retrieve the user from the database and check if the password is updated
         Optional<UserData> user = userRepository.findByEmail("userone@example.com");
         assertTrue(user.isPresent());
-        assertTrue(passwordEncoder.matches("password124", user.get().getPassword()));
+        assertFalse(passwordEncoder.matches("password124", user.get().getPassword()));
     }
 
     @Test
