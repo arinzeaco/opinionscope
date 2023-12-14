@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @Slf4j
-@ActiveProfiles("test")
+//@ActiveProfiles("test")
 @SpringBootTest
 class UserServiceIntegratedTest  {
 
@@ -44,7 +45,8 @@ class UserServiceIntegratedTest  {
     private UserDetailsService userDetailsService;
 
     @Test
-    @Transactional
+//    @Transactional
+    @Rollback(false)
     public void createUser() {
         // Create a real userData object
         UserData userData = new UserData();
