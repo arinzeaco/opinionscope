@@ -67,7 +67,7 @@ class UserServiceIntegratedTest  {
 
         assertNotNull(response);
         assertEquals("200", response.getStatusCode());
-        assertEquals("User succkessfully registered", response.getStatusMsg());
+        assertEquals("User successfully registered", response.getStatusMsg());
         assertEquals(userData, response.getData());
         assertNotNull(response.getAccess_token());
         assertNotNull(response.getRefresh_token());
