@@ -49,8 +49,7 @@ jobs:
           context: .
           dockerfile: Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/opinionscope:today
-#          run: |
-#            docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ opinionscope }}:${{ github.sha }}
-#            docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ opinionscope }}:latest
+          run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ opinionscope }}:latest
+          tags: latest
+
 #          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/opinionscope:latest
