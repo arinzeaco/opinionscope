@@ -33,7 +33,7 @@ jobs:
           context: .
           dockerfile: Dockerfile
           push: false
-          tags: <span class="math-inline">\{\{ secrets\.DOCKER\_HUB\_USERNAME \}\}/opinion\-scope\-server\:</span>{{ github.sha }}  # Use the Git SHA for a unique tag
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/opinion-scope-server:${{ github.sha }}
 #          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/opinion-scope-server:latest
 
       - name: Login to Docker Hub
