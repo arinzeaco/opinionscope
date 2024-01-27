@@ -51,5 +51,5 @@ jobs:
           push: true
 #          run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/opinionscope
 #          tags: latest
-#          tags: akoskm/opinionscope:latest
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/opinionscope:latest
+          tags: arinzeaco/opinionscope:latest
+#          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/opinionscope:latest
